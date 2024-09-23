@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Setting;
+use App\Http\Controllers\UserManagementController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,7 +73,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 
     // ----------------------------- user controller ---------------------//
     Route::controller(UserManagementController::class)->group(function () {
-        Route::get('list/users', 'index')->middleware('auth')->name('list/users');
+        Route::get('list/users', 'userView')->middleware('auth')->name('list/users');
         Route::post('change/password', 'changePassword')->name('change/password');
         Route::get('view/user/edit/{id}', 'userView')->middleware('auth');
         Route::post('user/update', 'userUpdate')->name('user/update');

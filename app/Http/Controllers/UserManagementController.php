@@ -1,256 +1,166 @@
 <?php
 
-// namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
-// use DB;
-// use Auth;
-// use Session;
-// use Log;
-// use Carbon\Carbon;
-// use App\Models\User;
-// use Brian2694\Toastr\Facades\Toastr;
-// use Illuminate\Support\Facades\App;
-// use Illuminate\Support\Facades\Http;
-// use Illuminate\Support\Facades\Hash;
-// use App\Rules\MatchOldPassword;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class UserManagementController extends Controller
+{
+    /** Afficher tous les utilisateurs */
+    public function userView()
+    {
+        $users = User::all();
+        return view('usermanagement.list_users', compact('users'));
+    }
+
+    // UserController.php
+    public function getUsersData()
+    {
+        $users = User::all()->map(function($user) {
+            return [
+                'id' => $user->id,
+                'user_id' => $user->user_id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'date_of_birth' => $user->date_of_birth,
+                'join_date' => $user->join_date,
+                'phone_number' => $user->phone_number,
+                'status' => $user->status,
+                'role_name' => $user->role_name,
+                'avatar' => $user->avatar,
+                'position' => $user->position,
+                'department' => $user->department,
+                'modify' => '<button class="btn btn-edit" data-id="'.$user->id.'">Modifier</button>' // Exemple de bouton de modification
+            ];
+        });
+
+        return response()->json(['data' => $users]);
+    }
 
 
-// class UserManagementController extends Controller
-// {
-//     /** index page */
-//     public function index()
-//     {
-//         return view('usermanagement.list_users');
-//     }
 
-//     /** user view */
-//     public function userView($id)
-//     {
-//         $users = User::where('user_id',$id)->first();
-//         $role  = DB::table('role_type_users')->get();
-//         return view('usermanagement.user_update',compact('users','role'));
-//     }
+    /** Formulaire pour ajouter un utilisateur */
+    public function userCreate()
+    {
+        return view('usermanagement.add_user');
+    }
 
-//     /** user Update */
-//     public function userUpdate(Request $request)
-//     {
-//         DB::beginTransaction();
-//         try {
-//             if (Session::get('role_name') === 'Admin' || Session::get('role_name') === 'Super Admin')
-//             {
-//                 $user_id       = $request->user_id;
-//                 $name          = $request->name;
-//                 $email         = $request->email;
-//                 $role_name     = $request->role_name;
-//                 $position      = $request->position;
-//                 $phone         = $request->phone_number;
-//                 $date_of_birth = $request->date_of_birth;
-//                 $department    = $request->department;
-//                 $status        = $request->status;
+    /** Ajouter un nouvel utilisateur */
+    public function userAdd(Request $request)
+    {
+        // Validation des données d'entrée
+        $request->validate([
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|email|unique:users,email',
+            'role_name'     => 'required|string',
+            'position'      => 'nullable|string|max:255',
+            'phone_number'  => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date',
+            'department'    => 'nullable|string|max:255',
+            'status'        => 'required|string',
+            'avatar'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-//                 $image_name = $request->hidden_avatar;
-//                 $image = $request->file('avatar');
+        DB::beginTransaction();
+        try {
+            // Gestion de l'upload de l'image
+            $image_name = 'photo_defaults.jpg'; // Image par défaut
 
-//                 if($image_name =='photo_defaults.jpg') {
-//                     if ($image != '') {
-//                         $image_name = rand() . '.' . $image->getClientOriginalExtension();
-//                         $image->move(public_path('/images/'), $image_name);
-//                     }
-//                 } else {
-                    
-//                     if($image != '') {
-//                         unlink('images/'.$image_name);
-//                         $image_name = rand() . '.' . $image->getClientOriginalExtension();
-//                         $image->move(public_path('/images/'), $image_name);
-//                     }
-//                 }
-            
-//                 $update = [
-//                     'user_id'       => $user_id,
-//                     'name'          => $name,
-//                     'role_name'     => $role_name,
-//                     'email'         => $email,
-//                     'position'      => $position,
-//                     'phone_number'  => $phone,
-//                     'date_of_birth' => $date_of_birth,
-//                     'department'    => $department,
-//                     'status'        => $status,
-//                     'avatar'        => $image_name,
-//                 ];
+            if ($request->hasFile('avatar')) {
+                $image = $request->file('avatar');
+                $image_name = time() . '.' . $image->getClientOriginalExtension(); // Utilisation du timestamp pour éviter les conflits
+                $image->move(public_path('/images/'), $image_name);
+            }
 
-//                 User::where('user_id',$request->user_id)->update($update);
-//             } else {
-//                 Toastr::error('User update fail :)','Error');
-//             }
-//             DB::commit();
-//             Toastr::success('User updated successfully :)','Success');
-//             return redirect()->back();
+            // Création d'un nouvel utilisateur
+            User::create([
+                'name'          => $request->name,
+                'email'         => $request->email,
+                'role_name'     => $request->role_name,
+                'position'      => $request->position,
+                'phone_number'  => $request->phone_number,
+                'date_of_birth' => $request->date_of_birth,
+                'department'    => $request->department,
+                'status'        => $request->status,
+                'avatar'        => $image_name,
+                'password'      => Hash::make('defaultpassword123'), // Mot de passe par défaut à changer
+            ]);
 
-//         } catch(\Exception $e){
-//             DB::rollback();
-//             Toastr::error('User update fail :)','Error');
-//             return redirect()->back();
-//         }
-//     }
+            DB::commit();
+            Toastr::success('Utilisateur ajouté avec succès :)', 'Succès');
+            return redirect()->back();
 
-//     /** user delete */
-//     public function userDelete(Request $request)
-//     {
-//         DB::beginTransaction();
-//         try {
-//             if (Session::get('role_name') === 'Super Admin' || Session::get('role_name') === 'Admin')
-//             {
-//                 if ($request->avatar == 'photo_defaults.jpg')
-//                 {
-//                     User::destroy($request->user_id);
-//                 } else {
-//                     User::destroy($request->user_id);
-//                     unlink('images/'.$request->avatar);
-//                 }
-//             } else {
-//                 Toastr::error('User deleted fail :)','Error');
-//             }
+        } catch (\Exception $e) {
+            DB::rollback();
+            Toastr::error('Échec de l\'ajout de l\'utilisateur: ' . $e->getMessage(), 'Erreur');
+            return redirect()->back();
+        }
+    }
 
-//             DB::commit();
-//             Toastr::success('User deleted successfully :)','Success');
-//             return redirect()->back();
-    
-//         } catch(\Exception $e) {
-//             Log::info($e);
-//             DB::rollback();
-//             Toastr::error('User deleted fail :)','Error');
-//             return redirect()->back();
-//         }
-//     }
+    /** Formulaire de modification d'un utilisateur */
+    public function userEdit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('usermanagement.edit_user', compact('user'));
+    }
 
-//     /** change password */
-//     public function changePassword(Request $request)
-//     {
-//         $request->validate([
-//             'current_password'     => ['required', new MatchOldPassword],
-//             'new_password'         => ['required'],
-//             'new_confirm_password' => ['same:new_password'],
-//         ]);
+    /** Mettre à jour les informations d'un utilisateur */
+    public function userUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|email|unique:users,email,' . $id,
+            'role_name'     => 'required|string',
+            'position'      => 'nullable|string|max:255',
+            'phone_number'  => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date',
+            'department'    => 'nullable|string|max:255',
+            'status'        => 'required|string',
+            'avatar'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-//         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-//         DB::commit();
-//         Toastr::success('User change successfully :)','Success');
-//         return redirect()->intended('home');
-//     }
+        $user = User::findOrFail($id);
 
-//     /** get users data */
-//     public function getUsersData(Request $request)
-//     {
-//         $draw            = $request->get('draw');
-//         $start           = $request->get("start");
-//         $rowPerPage      = $request->get("length"); // total number of rows per page
-//         $columnIndex_arr = $request->get('order');
-//         $columnName_arr  = $request->get('columns');
-//         $order_arr       = $request->get('order');
-//         $search_arr      = $request->get('search');
+        // Gestion de l'upload de l'image
+        if ($request->hasFile('avatar')) {
+            $image = $request->file('avatar');
+            $image_name = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/images/'), $image_name);
+            $user->avatar = $image_name; // Mettre à jour l'avatar
+        }
 
-//         $columnIndex     = $columnIndex_arr[0]['column']; // Column index
-//         $columnName      = $columnName_arr[$columnIndex]['data']; // Column name
-//         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-//         $searchValue     = $search_arr['value']; // Search value
+        $user->update([
+            'name'          => $request->name,
+            'email'         => $request->email,
+            'role_name'     => $request->role_name,
+            'position'      => $request->position,
+            'phone_number'  => $request->phone_number,
+            'date_of_birth' => $request->date_of_birth,
+            'department'    => $request->department,
+            'status'        => $request->status,
+        ]);
 
-//         $users =  DB::table('users');
-//         $totalRecords = $users->count();
+        Toastr::success('Utilisateur mis à jour avec succès :)', 'Succès');
+        return redirect()->route('user.view');
+    }
 
-//         $totalRecordsWithFilter = $users->where(function ($query) use ($searchValue) {
-//             $query->where('name', 'like', '%' . $searchValue . '%');
-//             $query->orWhere('email', 'like', '%' . $searchValue . '%');
-//             $query->orWhere('position', 'like', '%' . $searchValue . '%');
-//             $query->orWhere('phone_number', 'like', '%' . $searchValue . '%');
-//             $query->orWhere('status', 'like', '%' . $searchValue . '%');
-//         })->count();
+    /** Supprimer un utilisateur */
+    public function userDelete($id)
+    {
+        $user = User::findOrFail($id);
 
-//         if ($columnName == 'name') {
-//             $columnName = 'name';
-//         }
-//         $records = $users->orderBy($columnName, $columnSortOrder)
-//             ->where(function ($query) use ($searchValue) {
-//                 $query->where('name', 'like', '%' . $searchValue . '%');
-//                 $query->orWhere('email', 'like', '%' . $searchValue . '%');
-//                 $query->orWhere('position', 'like', '%' . $searchValue . '%');
-//                 $query->orWhere('phone_number', 'like', '%' . $searchValue . '%');
-//                 $query->orWhere('status', 'like', '%' . $searchValue . '%');
-//             })
-//             ->skip($start)
-//             ->take($rowPerPage)
-//             ->get();
-//         $data_arr = [];
-        
-//         foreach ($records as $key => $record) {
-//             $modify = '
-//                 <td class="text-right">
-//                     <div class="dropdown dropdown-action">
-//                         <a href="" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-//                             <i class="fas fa-ellipsis-v ellipse_color"></i>
-//                         </a>
-//                         <div class="dropdown-menu dropdown-menu-right">
-//                             <a class="dropdown-item" href="'.url('users/add/edit/'.$record->user_id).'">
-//                                 <i class="far fa-edit me-2"></i> Edit
-//                             </a>
-//                             <a class="dropdown-item" href="'.url('users/delete/'.$record->id).'">
-//                             <i class="fas fa-trash-alt m-r-5"></i> Delete
-//                         </a>
-//                         </div>
-//                     </div>
-//                 </td>
-//             ';
-//             $avatar = '
-//                 <td>
-//                     <h2 class="table-avatar">
-//                         <a class="avatar-sm me-2">
-//                             <img class="avatar-img rounded-circle avatar" data-avatar='.$record->avatar.' src="/images/'.$record->avatar.'"alt="'.$record->name.'">
-//                         </a>
-//                     </h2>
-//                 </td>
-//             ';
-//             if ($record->status === 'Active') {
-//                 $status = '<td><span class="badge bg-success-dark">'.$record->status.'</span></td>';
-//             } elseif ($record->status === 'Disable') {
-//                 $status = '<td><span class="badge bg-danger-dark">'.$record->status.'</span></td>';
-//             }  elseif ($record->status === 'Inactive') {
-//                 $status = '<td><span class="badge badge-warning">'.$record->status.'</span></td>';
-//             } else {
-//                 $status = '<td><span class="badge badge-secondary">'.$record->status.'</span></td>';
-//             }
+        // Supprimer l'avatar du système de fichiers si nécessaire
+        if ($user->avatar != 'photo_defaults.jpg') {
+            @unlink(public_path('/images/' . $user->avatar));
+        }
 
-//             $modify = '
-//                 <td class="text-end"> 
-//                     <div class="actions">
-//                         <a href="'.url('view/user/edit/'.$record->user_id).'" class="btn btn-sm bg-danger-light">
-//                             <i class="far fa-edit me-2"></i>
-//                         </a>
-//                         <a class="btn btn-sm bg-danger-light delete user_id" data-bs-toggle="modal" data-user_id="'.$record->user_id.'" data-bs-target="#delete">
-//                         <i class="fe fe-trash-2"></i>
-//                         </a>
-//                     </div>
-//                 </td>
-//             ';
-           
-//             $data_arr [] = [
-//                 "user_id"      => $record->user_id,
-//                 "avatar"       => $avatar,
-//                 "name"         => $record->name,
-//                 "email"        => $record->email,
-//                 "position"     => $record->position,
-//                 "phone_number" => $record->phone_number,
-//                 "join_date"    => $record->join_date,
-//                 "status"       => $status, 
-//                 "modify"       => $modify, 
-//             ];
-//         }
+        $user->delete();
 
-//         $response = [
-//             "draw"                 => intval($draw),
-//             "iTotalRecords"        => $totalRecords,
-//             "iTotalDisplayRecords" => $totalRecordsWithFilter,
-//             "aaData"               => $data_arr
-//         ];
-//         return response()->json($response);
-//     }
-// }
+        Toastr::success('Utilisateur supprimé avec succès :)', 'Succès');
+        return redirect()->back();
+    }
+}

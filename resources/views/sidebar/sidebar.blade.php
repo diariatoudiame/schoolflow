@@ -7,7 +7,7 @@
                 </li>
                 <li class="{{set_active(['setting/page'])}}">
                     <a href="{{ route('setting/page') }}">
-                        <i class="fas fa-cog"></i> 
+                        <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
                 </li>
