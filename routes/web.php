@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Setting;
 use App\Http\Controllers\TeacherController;
@@ -112,6 +113,18 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
 //        Route::put('/teachers/{id}', [TeacherController::class, 'updateRecordTeacher'])->name('teacher.update');
         Route::post('teacher/delete', 'teacherDelete')->name('teacher/delete'); // delete record teacher
     });
+    // ------------------------ book -------------------------------//
+    Route::controller(BookController::class)->group(function () {
+        Route::get('book/add/page', 'bookAdd')->middleware('auth')->name('book/add/page'); // page for adding a book
+        Route::get('book/list/page', 'bookList')->middleware('auth')->name('book/list/page'); // page for listing books
+        Route::get('book/grid/page', 'bookGrid')->middleware('auth')->name('book/grid/page'); // page for grid view of books
+        Route::post('book/save', 'saveRecord')->middleware('auth')->name('book/save'); // save book record
+        Route::get('book/edit/{id}', 'editRecord')->name('book/edit'); // view book record for editing
+        Route::get('book/infos/{id}', 'show')->name('book/infos'); // view detailed information of a book
+        Route::put('book/update/{id}', 'updateRecordBook')->middleware('auth')->name('book/update'); // update book record
+        Route::post('book/delete', 'bookDelete')->name('book/delete'); // delete book record
+    });
+
 
     // ----------------------- department -----------------------------//
     Route::controller(DepartmentController::class)->group(function () {

@@ -26,7 +26,7 @@ class CreateRoleTypeUsersTable extends Migration
             ['role_type' => 'Teachers'],
             ['role_type' => 'Student'],
             ['role_type' => 'Staff'],
-            ['role_type' => 'Client'],
+
         ]);
     }
 

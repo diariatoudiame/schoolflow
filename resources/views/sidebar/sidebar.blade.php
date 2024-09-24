@@ -206,7 +206,9 @@
                     <span>Management</span>
                 </li>
                 <li>
-                    <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
+{{--                    <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>--}}
+                    <a href="{{ route('book/list/page') }}"><i class="fas fa-book"></i> <span>Library</span></a>
+
                 </li>
             </ul>
         </div>
