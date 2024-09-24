@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Setting;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -105,8 +106,10 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('teacher/list/page', 'teacherList')->middleware('auth')->name('teacher/list/page'); // page teacher
         Route::get('teacher/grid/page', 'teacherGrid')->middleware('auth')->name('teacher/grid/page'); // page grid teacher
         Route::post('teacher/save', 'saveRecord')->middleware('auth')->name('teacher/save'); // save record
-        Route::get('teacher/edit/{user_id}', 'editRecord'); // view teacher record
-        Route::post('teacher/update', 'updateRecordTeacher')->middleware('auth')->name('teacher/update'); // update record
+        Route::get('teacher/edit/{id}', 'editRecord')->name('teacher/s'); ; // view teacher record
+        Route::get('teacher/infos/{id}', 'show')->name('teacher/infos'); ; // view teacher record
+        Route::put('teacher/update/{id}', 'updateRecordTeacher')->middleware('auth')->name('teacher/update'); // update record
+//        Route::put('/teachers/{id}', [TeacherController::class, 'updateRecordTeacher'])->name('teacher.update');
         Route::post('teacher/delete', 'teacherDelete')->name('teacher/delete'); // delete record teacher
     });
 

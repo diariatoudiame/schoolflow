@@ -42,8 +42,10 @@
                     </a>
                     <ul>
                         <li><a href="{{ route('list/users') }}" class="{{set_active(['list/users'])}} {{ (request()->is('view/user/edit/*')) ? 'active' : '' }}">List Users</a></li>
+                        <li><a href="{{ route('teacher/list/page') }}" class="{{set_active(['teacher/list/page'])}} {{ (request()->is('teacher/edit/*')) ? 'active' : '' }}">List Teachers</a></li>
                     </ul>
                 </li>
+
                 @endif
 
                 @if(auth()->user()->role_name === 'Admin')
