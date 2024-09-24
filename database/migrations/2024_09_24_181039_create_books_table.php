@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('published_date');
             $table->integer('quantity');
             $table->string('genre');
+            $table->string('status')->default('available');
             $table->timestamps();
         });
     }

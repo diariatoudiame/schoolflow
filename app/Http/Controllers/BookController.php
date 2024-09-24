@@ -31,7 +31,6 @@ class BookController extends Controller
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'published_date' => 'required|date',
-            'quantity' => 'required|integer|min:1',
             'genre' => 'required|string|max:255',
         ]);
 
@@ -43,7 +42,6 @@ class BookController extends Controller
                 'author' => $request->input('author'),
                 'book_number' => Str::uuid(), // Génère un identifiant unique
                 'published_date' => $request->input('published_date'),
-                'quantity' => $request->input('quantity'),
                 'genre' => $request->input('genre'),
             ]);
 
@@ -81,7 +79,6 @@ class BookController extends Controller
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
             'published_date' => 'required|date',
-            'quantity' => 'required|integer|min:1',
             'genre' => 'required|string|max:255',
         ]);
 
@@ -93,7 +90,6 @@ class BookController extends Controller
                 'author' => $request->input('author'),
                 'book_number' => $request->input('book_number'),
                 'published_date' => $request->input('published_date'),
-                'quantity' => $request->input('quantity'),
                 'genre' => $request->input('genre'),
             ]);
 

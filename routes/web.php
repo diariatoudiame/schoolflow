@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\Setting;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserManagementController;
@@ -123,6 +124,19 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('book/infos/{id}', 'show')->name('book/infos'); // view detailed information of a book
         Route::put('book/update/{id}', 'updateRecordBook')->middleware('auth')->name('book/update'); // update book record
         Route::post('book/delete', 'bookDelete')->name('book/delete'); // delete book record
+    });
+
+
+    // Routes pour les réservations
+    Route::controller(ReservationController::class)->group(function () {
+        Route::get('reservations', 'index')->middleware('auth')->name('reservations.index'); // Liste des réservations
+        Route::get('reservations/create/{i}', 'create')->middleware('auth')->name('reservations.create'); // Formulaire de réservation
+        Route::post('reservations', 'store')->middleware('auth')->name('reservations.store'); // Enregistrer une nouvelle réservation
+        Route::get('reservations/{id}', 'show')->middleware('auth')->name('reservations.show'); // Afficher une réservation spécifique
+        Route::get('reservations/{id}/edit', 'edit')->middleware('auth')->name('reservations.edit'); // Formulaire d'édition d'une réservation
+        Route::put('reservations/{id}', 'update')->middleware('auth')->name('reservations.update'); // Mettre à jour une réservation
+        Route::post('reservations/{id}/return', 'returnBook')->middleware('auth')->name('reservations.return'); // Retourner un livre
+        Route::delete('reservations/{id}', 'destroy')->middleware('auth')->name('reservations.destroy'); // Supprimer une réservation
     });
 
 

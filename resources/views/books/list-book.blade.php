@@ -7,10 +7,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Books</h3>
+                        <h3 class="page-title">Library</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Books</li>
+                            <li class="breadcrumb-item active">Library</li>
                         </ul>
                     </div>
                 </div>
@@ -57,10 +57,10 @@
                                         <a href="{{ route('book/grid/page') }}" class="btn btn-outline-gray me-2">
                                             <i class="fa fa-th" aria-hidden="true"></i>
                                         </a>
-                                        @if(auth()->user()->role_name === 'Student')
-                                        <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-download"></i> Book</a>
+                                        @if(!auth()->user()->role_name === 'Student')
+                                            <a href="{{ route('book/add/page') }}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+
                                         @endif
-                                        <a href="{{ route('book/add/page') }}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -79,6 +79,7 @@
                                         <th>Author</th> <!-- Change to Author -->
                                         <th>Genre</th> <!-- Change to Genre -->
                                         <th>Publication Date</th> <!-- Change to Publication Date -->
+                                        <th>Status</th> <!-- Change to Publication Date -->
                                         <th class="text-end">Action</th>
                                     </tr>
                                     </thead>
@@ -96,6 +97,7 @@
                                         <td>{{ $book->author }}</td> <!-- Change to Author -->
                                         <td>{{ $book->genre }}</td> <!-- Change to Genre -->
                                         <td>{{ $book->published_date }}</td> <!-- Change to Publication Date -->
+                                        <td>{{ $book->status }}</td>
                                         <td class="text-end">
                                             <div class="actions">
                                                 @if(auth()->user()->role_name === 'Normal User')
@@ -107,6 +109,11 @@
                                                 <a href="{{ url('book/infos/'.$book->id) }}" class="btn btn-sm bg-danger-light">
                                                     <i class="fas fa-info-circle me-2"></i>
                                                 </a>
+                                                    @endif
+                                                    @if(auth()->user()->role_name === 'Student')
+                                                        <a href="{{ url('reservations/create/'.$book->id) }}" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-calendar-check"></i>
+                                                        </a>
                                                     @endif
                                             </div>
                                         </td>

@@ -134,8 +134,9 @@
         </ul>
     </li>
                 <li>
-                    <a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                    <a href="{{ route('reservations.index') }}"><i class="fas fa-clipboard-list"></i> <span>My Reservations</span></a>
                 </li>
+
                 <li>
                     <a href="holiday.html"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
                 </li>
@@ -157,7 +158,7 @@
         </ul>
     </li>
                 <li>
-                    <a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                    <a href="{{ route('reservations.index') }}"><i class="fas fa-clipboard-list"></i> <span>My Reservations</span></a>
                 </li>
                 <li>
                     <a href="holiday.html"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>

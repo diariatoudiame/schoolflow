@@ -14,7 +14,12 @@ class Book extends Model
         'author',
         'book_number',
         'published_date',
-        'quantity',
         'genre',
+        'status',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'reservations');
+    }
 }
