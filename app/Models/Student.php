@@ -18,9 +18,17 @@ class Student extends Model
         'religion',
         'email',
         'class',
-        'section',
-        'admission_id',
         'phone_number',
         'upload',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function classes()
+    {
+        return $this->belongsToMany(Classe::class, 'class_student')
+            ->withPivot('academic_year'); // Inclure l'année académique dans la relation
+    }
 }

@@ -19,9 +19,11 @@ class Teacher extends Model
         'experience',
         'username',
         'address',
-        'city',
-        'state',
-        'zip_code',
-        'country',
+
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }
