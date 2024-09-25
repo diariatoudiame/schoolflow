@@ -7,10 +7,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Ajouter un Enseignant</h3>
+                        <h3 class="page-title">Add Teacher</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('teacher/list/page') }}">Enseignants</a></li>
-                            <li class="breadcrumb-item active">Ajouter un Enseignant</li>
+                            <li class="breadcrumb-item"><a href="{{ route('teacher/list/page') }}">Teachers</a></li>
+                            <li class="breadcrumb-item active">Add Teacher</li>
                         </ul>
                     </div>
                 </div>
@@ -24,12 +24,12 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-12">
-                                        <h5 class="form-title"><span>Détails de l'Enseignant</span></h5>
+                                        <h5 class="form-title"><span>Teacher Details</span></h5>
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group local-forms">
-                                            <label>Nom Complet <span class="login-danger">*</span></label>
-                                            <input type="text" class="form-control @error('full_name') is-invalid @enderror" name="full_name" placeholder="Entrez le nom complet" value="{{ old('full_name') }}">
+                                            <label>Full Name <span class="login-danger">*</span></label>
+                                            <input type="text" class="form-control @error('full_name') is-invalid @enderror" name="full_name" placeholder="Enter Full Name" value="{{ old('full_name') }}">
                                             @error('full_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -39,9 +39,9 @@
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group local-forms">
-                                            <label>Genre <span class="login-danger">*</span></label>
+                                            <label>Gender <span class="login-danger">*</span></label>
                                             <select class="form-control select @error('gender') is-invalid @enderror" name="gender">
-                                                <option value="">Sélectionner le Genre</option>
+                                                <option value="">Select Gender</option>
                                                 <option value="female" {{ old('gender') == 'female' ? "selected" :""}}>Female</option>
                                                 <option value="male" {{ old('gender') == 'male' ? "selected" :""}}>Male</option>
                                             </select>
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group local-forms">
-                                            <label>Date de Naissance <span class="login-danger">*</span></label>
+                                            <label>Date of Birth <span class="login-danger">*</span></label>
                                             <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}">
                                             @error('date_of_birth')
                                             <span class="invalid-feedback" role="alert">
@@ -65,8 +65,8 @@
                                     </div>
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group local-forms">
-                                            <label>Téléphone <span class="login-danger">*</span></label>
-                                            <input class="form-control @error('phone_number') is-invalid @enderror" type="text" name="phone_number" placeholder="Entrez le Numéro de Téléphone" value="{{ old('phone_number') }}">
+                                            <label>Phone Number <span class="login-danger">*</span></label>
+                                            <input class="form-control @error('phone_number') is-invalid @enderror" type="text" name="phone_number" placeholder="Enter Phone Number" value="{{ old('phone_number') }}">
                                             @error('phone_number')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -75,11 +75,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- Nouveau champ Email ajouté ici -->
+                                    <!-- New Email field added here -->
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group local-forms">
                                             <label>Email <span class="login-danger">*</span></label>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Entrez l'Email" value="{{ old('email') }}">
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Enter Email" value="{{ old('email') }}">
                                             @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -87,12 +87,12 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <!-- Fin du champ Email -->
+                                    <!-- End of Email field -->
 
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group local-forms">
                                             <label>Qualification <span class="login-danger">*</span></label>
-                                            <input type="text" class="form-control @error('qualification') is-invalid @enderror" name="qualification" placeholder="Entrez la Qualification" value="{{ old('qualification') }}">
+                                            <input type="text" class="form-control @error('qualification') is-invalid @enderror" name="qualification" placeholder="Enter Qualification" value="{{ old('qualification') }}">
                                             @error('qualification')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -101,13 +101,13 @@
                                         </div>
                                     </div>
 
-                                    <!-- Ligne contenant Expérience et Adresse -->
+                                    <!-- Row containing Experience and Address -->
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group local-forms">
-                                                    <label>Expérience <span class="login-danger">*</span></label>
-                                                    <input type="text" class="form-control @error('experience') is-invalid @enderror" name="experience" placeholder="Entrez l'Expérience" value="{{ old('experience') }}">
+                                                    <label>Experience <span class="login-danger">*</span></label>
+                                                    <input type="text" class="form-control @error('experience') is-invalid @enderror" name="experience" placeholder="Enter Experience" value="{{ old('experience') }}">
                                                     @error('experience')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -117,8 +117,8 @@
                                             </div>
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group local-forms">
-                                                    <label>Adresse <span class="login-danger">*</span></label>
-                                                    <input type="text" class="form-control @error('address') is-invalid @enderror" name="address" placeholder="Entrez l'Adresse" value="{{ old('address') }}">
+                                                    <label>Address <span class="login-danger">*</span></label>
+                                                    <input type="text" class="form-control @error('address') is-invalid @enderror" name="address" placeholder="Enter Address" value="{{ old('address') }}">
                                                     @error('address')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -131,7 +131,7 @@
 
                                     <div class="col-12">
                                         <div class="student-submit">
-                                            <button type="submit" class="btn btn-primary">Ajouter l'Enseignant</button>
+                                            <button type="submit" class="btn btn-primary">Add Teacher</button>
                                         </div>
                                     </div>
                                 </div>

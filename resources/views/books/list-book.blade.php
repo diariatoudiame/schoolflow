@@ -57,7 +57,7 @@
                                         <a href="{{ route('book/grid/page') }}" class="btn btn-outline-gray me-2">
                                             <i class="fa fa-th" aria-hidden="true"></i>
                                         </a>
-                                        @if(!auth()->user()->role_name === 'Student')
+                                        @if(auth()->user()->role_name === 'Librarian')
                                             <a href="{{ route('book/add/page') }}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
 
                                         @endif
@@ -100,12 +100,12 @@
                                         <td>{{ $book->status }}</td>
                                         <td class="text-end">
                                             <div class="actions">
-                                                @if(auth()->user()->role_name === 'Normal User')
+                                                @if(auth()->user()->role_name === 'Librarian')
                                                 <a href="{{ url('book/edit/'.$book->id) }}" class="btn btn-sm bg-danger-light">
                                                     <i class="far fa-edit me-2"></i>
                                                 </a>
                                                 @endif
-                                                    @if(auth()->user()->role_name === 'Normal User')
+                                                    @if(auth()->user()->role_name === 'Librarian')
                                                 <a href="{{ url('book/infos/'.$book->id) }}" class="btn btn-sm bg-danger-light">
                                                     <i class="fas fa-info-circle me-2"></i>
                                                 </a>
