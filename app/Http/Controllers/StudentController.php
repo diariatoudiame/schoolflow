@@ -2,36 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classe;
 use App\Models\Student;
-use App\Models\User; // Import du modèle User
+use App\Models\User; // Import User model
 use Brian2694\Toastr\Facades\Toastr;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash; // Import de Hash pour le mot de passe
+use Illuminate\Support\Facades\Hash; // Import Hash for password
 
 class StudentController extends Controller
 {
-    /** Liste des étudiants */
+    /** List of students */
     public function student()
     {
         $studentList = Student::all();
         return view('student.student', compact('studentList'));
     }
 
-    /** Affichage des étudiants en grille */
+    /** Display students in grid view */
     public function studentGrid()
     {
         $studentList = Student::all();
         return view('student.student-grid', compact('studentList'));
     }
 
-    /** Formulaire d'ajout d'un étudiant */
+    /** Student add form */
     public function studentAdd()
     {
-        return view('student.add-student');
+        $classes = Classe::all();
+        return view('student.add-student', compact('classes'));
     }
 
-    /** Sauvegarde d'un étudiant */
+    /** Save a student */
     public function studentSave(Request $request)
     {
         $request->validate([
@@ -39,132 +41,142 @@ class StudentController extends Controller
             'last_name'     => 'required|string',
             'gender'        => 'required|not_in:0',
             'date_of_birth' => 'required|date',
-            'roll'          => 'required|string',
+            'roll'          => 'required|string|unique:students,roll',
             'blood_group'   => 'required|string',
-            'email'         => 'required|email|unique:students,email|unique:users,email',
+            'email'         => 'required|email|unique:users,email',
             'phone_number'  => 'required',
-            'upload'        => 'required|image',
+            'upload'        => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'class_id'      => 'required|exists:classes,id',
+            'academic_year' => 'required|string',
         ]);
 
         DB::beginTransaction();
         try {
-            // Gestion de l'image téléchargée
-            $upload_file = rand() . '.' . $request->upload->extension();
+            // Handle the uploaded image
+            $upload_file = time() . '_' . $request->upload->extension();
             $path = $request->upload->storeAs('student-photos', $upload_file, 'public');
 
-            // Créer un utilisateur pour l'étudiant
+            // Create a user for the student
             $user = new User;
             $user->name = $request->first_name . ' ' . $request->last_name;
             $user->email = $request->email;
-            $user->password = Hash::make('passer@12'); // Définissez un mot de passe par défaut
-            $user->role_name = 'Student'; // Définissez un mot de passe par défaut
+            $user->password = Hash::make('passer@12');
+            $user->role_name = 'Student';
             $user->save();
 
-            // Créer l'étudiant et associer le user_id
+            // Create the student and associate the user_id
             $student = new Student;
-            $student->user_id = $user->id; // Associer l'utilisateur à l'étudiant
+            $student->user_id = $user->id;
             $student->first_name = $request->first_name;
             $student->last_name = $request->last_name;
             $student->gender = $request->gender;
             $student->date_of_birth = $request->date_of_birth;
             $student->roll = $request->roll;
             $student->blood_group = $request->blood_group;
-            $student->email = $request->email;
             $student->phone_number = $request->phone_number;
             $student->upload = $path;
             $student->save();
 
-            Toastr::success('L\'étudiant et le compte utilisateur ont été ajoutés avec succès :)', 'Succès');
+            // Attach the student to classes and academic year
+            $student->classes()->attach($request->class_id, ['academic_year' => $request->academic_year]);
+
             DB::commit();
-            return redirect()->back();
+            Toastr::success('Student and user account successfully added :)', 'Success');
+            return redirect()->route('student/list');
 
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Échec de l\'ajout de l\'étudiant et de la création de l\'utilisateur :)', 'Erreur');
-            return redirect()->back();
+            Toastr::error('Failed to add student: ' . $e->getMessage(), 'Error');
+            return redirect()->back()->withInput();
         }
     }
 
-    /** Formulaire de modification d'un étudiant */
+    /** Edit student form */
     public function studentEdit($id)
     {
-        $studentEdit = Student::findOrFail($id);
-        return view('student.edit-student', compact('studentEdit'));
+        $student = Student::findOrFail($id);
+        $classes =  Classe::all();
+        return view('student.edit-student', compact('student', 'classes'));
     }
 
-    /** Mise à jour d'un étudiant */
-    /** Mise à jour d'un étudiant */
-    public function studentUpdate(Request $request)
+    /** Update a student */
+    public function studentUpdate(Request $request, $id)
     {
-//        dd($request);
         $request->validate([
             'first_name'    => 'required|string',
             'last_name'     => 'required|string',
-            'email'         => 'required|email' ,
             'phone_number'  => 'required',
-            'upload'        => 'nullable|image',
-            'date_of_birth'        => 'nullable|date',
+            'upload'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'date_of_birth' => 'nullable|date',
+            'class_id'      => 'nullable|exists:classes,id',
+            'academic_year' => 'nullable|string'
         ]);
 
         DB::beginTransaction();
         try {
-            // Récupérer l'étudiant à mettre à jour
-            $student = Student::findOrFail($request->id);
+            // Retrieve the student to be updated
+            $student = Student::findOrFail($id);
 
-            // Vérifiez si un nouveau fichier d'image a été téléchargé
+            // Check if a new image file has been uploaded
             if ($request->hasFile('upload')) {
-                // Supprimer l'ancienne image si elle existe
-                if ($student->upload) {
-                    unlink(storage_path('app/public/student-photos/' . $student->upload));
+                // Delete the old image if it exists
+                if ($student->upload && file_exists(storage_path('app/public/' . $student->upload))) {
+                    unlink(storage_path('app/public/' . $student->upload));
                 }
-                // Stocker la nouvelle image
-                $upload_file = rand() . '.' . $request->upload->extension();
+                // Store the new image
+                $upload_file = time() . '.' . $request->upload->extension();
                 $path = $request->upload->storeAs('student-photos', $upload_file, 'public');
-                $student->upload = $path; // Mettre à jour le champ upload
+                $student->upload = $path;
             }
 
-            // Mettre à jour les autres champs
+            // Update other fields
             $student->first_name = $request->first_name;
             $student->last_name = $request->last_name;
-            $student->email = $request->email;
             $student->phone_number = $request->phone_number;
             $student->date_of_birth = $request->date_of_birth;
-            $student->save(); // Enregistrez les modifications
+            $student->save();
 
-            Toastr::success('L\'étudiant a été mis à jour avec succès :)', 'Succès');
+            // Update the association with classes if 'class_id' is present
+            if ($request->class_id) {
+                $student->classes()->sync([$request->class_id => ['academic_year' => $request->academic_year]]);
+            }
+
+            Toastr::success('Student successfully updated :)', 'Success');
             DB::commit();
-            return redirect()->back();
+            return redirect()->route('student/list');
 
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Échec de la mise à jour de l\'étudiant :)', 'Erreur');
+            Toastr::error('Failed to update student: ' . $e->getMessage(), 'Error');
             return redirect()->back();
         }
     }
 
-
-    /** Suppression d'un étudiant */
+    /** Delete a student */
     public function studentDelete(Request $request)
     {
         DB::beginTransaction();
         try {
-            $student = Student::findOrFail($request->id);
-            if ($student->upload) {
-                unlink(storage_path('app/public/student-photos/' . $student->upload));
-            }
-            $student->delete();
-            DB::commit();
-            Toastr::success('L\'étudiant a été supprimé avec succès :)', 'Succès');
-            return redirect()->back();
+            $teacher = Student::findOrFail($request->id);
 
+            // Supprimez l'avatar de l'enseignant si il existe
+            if ($request->avatar && file_exists(storage_path('app/public/' . $request->avatar))) {
+                unlink(storage_path('app/public/' . $request->avatar));
+            }
+
+            $teacher->delete();
+
+            DB::commit();
+            Toastr::success('Teacher successfully updated :)', 'Success');
+            return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Échec de la suppression de l\'étudiant :)', 'Erreur');
+            Toastr::error('Failed to delete the teacher : ' . $e->getMessage(), 'Erreur');
             return redirect()->back();
         }
     }
 
-    /** Affichage du profil d'un étudiant */
+    /** Display student profile */
     public function studentProfile($id)
     {
         $studentProfile = Student::findOrFail($id);

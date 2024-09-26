@@ -105,7 +105,12 @@
                                                     <a href="student-details.html">{{ $list->first_name }} {{ $list->last_name }}</a>
                                                 </h2>
                                             </td>
-                                            <td>{{ $list->class }} {{ $list->section }}</td>
+                                            <td>
+                                                @foreach($list->classes as $class)
+                                                    {{ $class->class_name }} {{-- Remplacez `name` par le champ qui représente le nom de la classe --}}
+                                                    @if (!$loop->last), @endif
+                                                @endforeach
+                                            </td>
                                             <td>{{ $list->date_of_birth }}</td>
                                             <td>{{ $list->phone_number }}</td>
                                             <td class="text-end">
@@ -146,10 +151,10 @@
                             <input type="hidden" name="avatar" class="e_avatar" value="">
                             <div class="row">
                                 <div class="col-6">
-                                    <button type="submit" class="btn btn-primary continue-btn submit-btn" style="border-radius: 5px !important;">Delete</button>
+                                    <button type="submit" class="btn btn-primary continue-btn submit-btn" style="border-radius: 5px !important;">Supprimer</button>
                                 </div>
                                 <div class="col-6">
-                                    <a href="#" data-bs-dismiss="modal" class="btn btn-primary paid-cancel-btn">Cancel</a>
+                                    <a href="#" data-bs-dismiss="modal" class="btn btn-primary paid-cancel-btn">Annuler</a>
                                 </div>
                             </div>
                         </form>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('blood_group')->nullable();
             $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
+
             $table->string('upload')->nullable();
             $table->timestamps();
 
