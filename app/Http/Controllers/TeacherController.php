@@ -18,6 +18,10 @@ class TeacherController extends Controller
         return view('teacher.list-teachers', compact('teachers'));
     }
 
+//    edit my profile
+
+
+
     /** Display details of a teacher */
     public function show($id)
     {
@@ -86,6 +90,46 @@ class TeacherController extends Controller
         $teacher = Teacher::findOrFail($id);
         return view('teacher.edit-teacher', compact('teacher'));
     }
+
+//    view my profile
+    public function editProfile()
+    {
+        // Récupérer les informations de l'enseignant connecté
+        $teacher = auth()->user()->teacher;
+
+        return view('teacher.teacher-profile', compact('teacher'));
+    }
+
+
+//    update my profile
+    public function update(Request $request)
+    {
+        // Récupérer l'enseignant connecté
+        $teacher = auth()->user()->teacher;
+
+        // Validation des données
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $teacher->user_id,
+            'gender' => 'required|string',
+            'date_of_birth' => 'required|date',
+            'qualification' => 'required|string',
+            'experience' => 'required|integer',
+            'phone_number' => 'required|string',
+            'address' => 'required|string',
+        ]);
+
+        // Mise à jour des données
+        $teacher->update($request->only([
+            'full_name', 'gender', 'date_of_birth', 'qualification', 'experience', 'phone_number', 'address'
+        ]));
+
+        // Mise à jour de l'adresse e-mail de l'utilisateur associé
+        $teacher->user->update(['email' => $request->email]);
+
+        return redirect()->route('teacher.space')->with('success', 'Profile updated successfully');
+    }
+
 
     /** Update a teacher's information */
     public function updateRecordTeacher(Request $request, $id)

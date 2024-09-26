@@ -14,7 +14,7 @@
                 <li class="submenu {{set_active(['home','teacher/dashboard','student/dashboard'])}}">
                     <a>
                         <i class="fas fa-tachometer-alt"></i>
-                        <span> Dashboard</span> 
+                        <span> Dashboard</span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul>
@@ -37,7 +37,7 @@
                 <li class="submenu {{set_active(['list/users'])}} {{ (request()->is('view/user/edit/*')) ? 'active' : '' }}">
                     <a href="#">
                         <i class="fas fa-shield-alt"></i>
-                        <span>User Management</span> 
+                        <span>User Management</span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul>
@@ -201,6 +201,14 @@
                     <a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
                 </li>
 @endif
+                @if(auth()->user()->role_name === 'Teacher')
+                <li>
+                    <a href="{{ route('teacher.space') }}" class="nav-link">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Teacher Space</span>
+                    </a>
+                </li>
+                @endif
 
 
                 <li class="menu-title">

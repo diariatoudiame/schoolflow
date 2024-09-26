@@ -113,7 +113,16 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::put('teacher/update/{id}', 'updateRecordTeacher')->middleware('auth')->name('teacher/update'); // update record
 //        Route::put('/teachers/{id}', [TeacherController::class, 'updateRecordTeacher'])->name('teacher.update');
         Route::post('teacher/delete', 'teacherDelete')->name('teacher/delete'); // delete record teacher
+        //New
+        Route::put('teacher/profile',  'update')->name('teacher.profile.update');
+        Route::get('/teacher/profile/edit', 'editProfile')->name('teacher.profile.edit');
+
+
+
     });
+    Route::get('/teacher/space', function () {
+        return view('teacher.space-teacher'); // Assurez-vous que le fichier Blade est enregistré sous teacher/dashboard.blade.php
+    })->name('teacher.space');
     // ------------------------ book -------------------------------//
     Route::controller(BookController::class)->group(function () {
         Route::get('book/add/page', 'bookAdd')->middleware('auth')->name('book/add/page'); // page for adding a book
@@ -124,6 +133,8 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('book/infos/{id}', 'show')->name('book/infos'); // view detailed information of a book
         Route::put('book/update/{id}', 'updateRecordBook')->middleware('auth')->name('book/update'); // update book record
         Route::post('book/delete', 'bookDelete')->name('book/delete'); // delete book record
+        Route::get('/books/search', 'searchBooks')->name('books.search');
+
     });
 
 

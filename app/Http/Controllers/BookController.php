@@ -17,6 +17,8 @@ class BookController extends Controller
         return view('books.list-book', compact('books')); // Show the view with the list of books
     }
 
+
+
     /** Show the form for adding a new book */
     public function bookAdd()
     {
