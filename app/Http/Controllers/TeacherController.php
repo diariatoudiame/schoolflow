@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountCreated;
 use Illuminate\Http\Request;
 use App\Models\Teacher;
 use App\Models\User; // Import the User model
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class TeacherController extends Controller
 {
@@ -60,6 +62,7 @@ class TeacherController extends Controller
                 'role_name' => 'Teacher', // Ensure this matches your role structure
                 'join_date' => now(), // Ensure this matches your role structure
             ]);
+            Mail::to($user->email)->send(new AccountCreated($user));
 
             // Create the new teacher
             Teacher::create([

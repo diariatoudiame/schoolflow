@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountCreated;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserManagementController extends Controller
 {
@@ -77,7 +79,7 @@ class UserManagementController extends Controller
             }
 
             // Création d'un nouvel utilisateur
-            User::create([
+              $user = User::create([
                 'name'          => $request->name,
                 'email'         => $request->email,
                 'role_name'     => $request->role_name,
@@ -89,7 +91,7 @@ class UserManagementController extends Controller
                 'avatar'        => $image_name,
                 'password'      => Hash::make('defaultpassword123'), // Mot de passe par défaut à changer
             ]);
-
+            Mail::to($user->email)->send(new AccountCreated($user));
             DB::commit();
             Toastr::success('Utilisateur ajouté avec succès :)', 'Succès');
             return redirect()->back();
