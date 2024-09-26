@@ -33,12 +33,7 @@
                                             <input type="text" class="form-control" name="subject_name" placeholder="Enter Subject Name">
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-4">
-                                        <div class="form-group local-forms">
-                                            <label>Class <span class="login-danger">*</span></label>
-                                            <input type="text" class="form-control" name="class" placeholder="Enter Class">
-                                        </div>
-                                    </div>
+
                                     <div class="col-12">
                                         <div class="student-submit">
                                             <button type="submit" class="btn btn-primary">Submit</button>

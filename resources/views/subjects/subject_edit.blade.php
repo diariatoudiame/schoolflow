@@ -21,7 +21,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('subject/update') }}" method="POST">
+                            <form action="{{ route('subject/update', $subject->id) }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-12">
@@ -30,21 +30,16 @@
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Subject ID <span class="login-danger">*</span></label>
-                                            <input type="text" class="form-control" name="subject_id" value="{{ $subjectEdit->subject_id }}" readonly>
+                                            <input type="text" class="form-control" name="subject_id" value="{{ $subject->subject_id }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Subject Name <span class="login-danger">*</span></label>
-                                            <input type="text" class="form-control" name="subject_name" value="{{ $subjectEdit->subject_name }}">
+                                            <input type="text" class="form-control" name="subject_name" value="{{ $subject->subject_name }}">
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-4">
-                                        <div class="form-group local-forms">
-                                            <label>Class <span class="login-danger">*</span></label>
-                                            <input type="text" class="form-control"  name="class" value="{{ $subjectEdit->class }}">
-                                        </div>
-                                    </div>
+
                                     <div class="col-12">
                                         <div class="student-submit">
                                             <button type="submit" class="btn btn-primary">Update</button>

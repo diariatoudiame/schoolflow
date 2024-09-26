@@ -74,12 +74,11 @@
                                             </th>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Class</th>
                                             <th class="text-end">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($subjectList as $key => $value)
+                                        @foreach($subjects as $key => $value)
                                         <tr>
                                             <td>
                                                 <div class="form-check check-tables">
@@ -93,10 +92,9 @@
                                                     <a>{{ $value->subject_name }}</a>
                                                 </h2>
                                             </td>
-                                            <td>{{ $value->class }}</td>
                                             <td class="text-end">
                                                 <div class="actions">
-                                                    <a href="{{ url('subject/edit/'.$value->subject_id) }}" class="btn btn-sm bg-danger-light">
+                                                    <a href="{{ url('subject/edit/'.$value->id) }}" class="btn btn-sm bg-danger-light">
                                                         <i class="far fa-edit me-2"></i>
                                                     </a>
                                                     <a class="btn btn-sm bg-danger-light delete" data-bs-toggle="modal" data-bs-target="#delete">
