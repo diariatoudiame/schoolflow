@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 @section('content')
     {{-- message --}}
@@ -9,10 +8,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Subjects</h3>
+                        <h3 class="page-title">Classes</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Subjects</li>
+                            <li class="breadcrumb-item active">Classes</li>
                         </ul>
                     </div>
                 </div>
@@ -32,7 +31,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by Class ...">
+                            <input type="text" class="form-control" placeholder="Search by Level ...">
                         </div>
                     </div>
                     <div class="col-lg-2">
@@ -50,13 +49,13 @@
                             <div class="page-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h3 class="page-title">Subjects</h3>
+                                        <h3 class="page-title">Classes</h3>
                                     </div>
                                     <div class="col-auto text-end float-end ms-auto download-grp">
                                         <a href="#" class="btn btn-outline-primary me-2">
                                             <i class="fas fa-download"></i> Download
                                         </a>
-                                        <a href="{{ route('subject/add/page') }}" class="btn btn-primary">
+                                        <a href="{{ route('class/add/page') }}" class="btn btn-primary">
                                             <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
@@ -64,37 +63,37 @@
                             </div>
                             <div class="table-responsive">
                                 <table
-                                    class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+                                        class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
                                     <thead class="student-thread">
-                                        <tr>
-                                            <th>
-                                                <div class="form-check check-tables">
-                                                    <input class="form-check-input" type="checkbox" value="something">
-                                                </div>
-                                            </th>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th class="text-end">Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>
+                                            <div class="form-check check-tables">
+                                                <input class="form-check-input" type="checkbox" value="something">
+                                            </div>
+                                        </th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($subjects as $key => $value)
+                                    @foreach($classes as $key => $value)
                                         <tr>
                                             <td>
                                                 <div class="form-check check-tables">
                                                     <input class="form-check-input" type="checkbox"
-                                                        value="something">
+                                                           value="something">
                                                 </div>
                                             </td>
-                                            <td class="subject_id">{{ $value->subject_id }}</td>
+                                            <td class="class_id">{{ $value->id }}</td>
                                             <td>
                                                 <h2>
-                                                    <a>{{ $value->subject_name }}</a>
+                                                    <a>{{ $value->class_name }}</a>
                                                 </h2>
                                             </td>
                                             <td class="text-end">
                                                 <div class="actions">
-                                                    <a href="{{ url('subject/edit/'.$value->id) }}" class="btn btn-sm bg-danger-light">
+                                                    <a href="{{ url('class/edit/'.$value->id) }}" class="btn btn-sm bg-danger-light">
                                                         <i class="far fa-edit me-2"></i>
                                                     </a>
                                                     <a class="btn btn-sm bg-danger-light delete" data-bs-toggle="modal" data-bs-target="#delete">
@@ -103,7 +102,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        @endforeach
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -114,27 +113,27 @@
         </div>
     </div>
 
-    {{-- model elete --}}
+    {{-- model delete --}}
     <div class="modal custom-modal fade" id="delete" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="form-header">
-                        <h3>Delete Subject</h3>
-                        <p>Are you sure want to delete?</p>
+                        <h3>Delete Class</h3>
+                        <p>Are you sure you want to delete?</p>
                     </div>
                     <div class="modal-btn delete-action">
                         <div class="row">
-                            <form action="{{ route('subject/delete') }}" method="POST">
+                            <form action="{{ route('class/delete') }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="id" class="e_subject_id" value="">
+                                <input type="hidden" name="id" class="e_class_id" value="">
                                 <div class="row">
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-primary paid-continue-btn" style="width: 100%;">Delete</button>
                                     </div>
                                     <div class="col-6">
                                         <a data-bs-dismiss="modal"
-                                            class="btn btn-primary paid-cancel-btn">Cancel
+                                           class="btn btn-primary paid-cancel-btn">Cancel
                                         </a>
                                     </div>
                                 </div>
@@ -152,7 +151,7 @@
             $(document).on('click','.delete',function()
             {
                 var _this = $(this).parents('tr');
-                $('.e_subject_id').val(_this.find('.subject_id').text());
+                $('.e_class_id').val(_this.find('.class_id').text());
             });
         </script>
     @endsection

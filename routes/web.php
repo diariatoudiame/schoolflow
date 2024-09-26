@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ClassController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\Setting;
@@ -172,6 +173,18 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::post('subject/update/{subject_id}', 'updateRecord')->name('subject/update'); // subject/update
         Route::post('subject/delete', 'deleteRecord')->name('subject/delete'); // subject/delete
         Route::get('subject/edit/{subject_id}', 'subjectEdit'); // subject/edit/page
+    });
+
+    // ----------------------- classe -----------------------------//
+    Route::controller(ClassController::class)->group(function () {
+        Route::get('class/list/page', 'classList')->middleware('auth')->name('class/list/page'); // class/list/page
+        Route::get('class/grid', 'grid')->middleware('auth')->name('class/grid'); // class/grid
+        Route::get('class/add/page', 'classAdd')->middleware('auth')->name('class/add/page'); // class/add/page
+        Route::post('class/save', 'saveRecord')->name('class/save'); // class/save
+        Route::get('class/edit/{id}', 'classEdit')->middleware('auth')->name('class/edit/page'); // class/edit/page
+        Route::put('class/update/{id}', 'updateRecord')->name('class/update'); // class/update
+        Route::post('class/delete', 'deleteRecord')->middleware('auth')->name('class/delete'); // class/delete
+        Route::get('class/show/{id}', 'show')->middleware('auth')->name('class/show'); // class/show
     });
 
     // ----------------------- invoice -----------------------------//

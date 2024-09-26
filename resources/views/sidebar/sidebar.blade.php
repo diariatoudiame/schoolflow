@@ -63,11 +63,11 @@
         </ul>
     </li>
 
-    <li class="submenu {{set_active(['department/add/page','department/edit/page'])}} {{ request()->is('department/edit/*') ? 'active' : '' }}">
-        <a href="#"><i class="fas fa-building"></i>
-            <span> Departments</span>
-            <span class="menu-arrow"></span>
-        </a>
+{{--    <li class="submenu {{set_active(['department/add/page','department/edit/page'])}} {{ request()->is('department/edit/*') ? 'active' : '' }}">--}}
+{{--        <a href="#"><i class="fas fa-building"></i>--}}
+{{--            <span> Departments</span>--}}
+{{--            <span class="menu-arrow"></span>--}}
+{{--        </a>--}}
         <ul>
             <li><a href="{{ route('department/list/page') }}" class="{{set_active(['department/list/page'])}} {{ request()->is('department/edit/*') ? 'active' : '' }}">Department List</a></li>
             <li><a href="{{ route('department/add/page') }}" class="{{set_active(['department/add/page'])}}">Department Add</a></li>
@@ -87,6 +87,13 @@
         </ul>
     </li>
 
+
+                    <li class="{{set_active(['class/list/page'])}}">
+                        <a href="{{ route('class/list/page') }}">
+                            <i class="fas fa-book"></i>
+                            <span>Classes</span>
+                        </a>
+                    </li>
     <li class="submenu {{set_active(['invoice/list/page','invoice/add/page'])}} {{ request()->is('invoice/edit/*') ? 'active' : '' }}">
         <a href="#"><i class="fas fa-clipboard"></i>
             <span> Invoices</span>
