@@ -1,5 +1,5 @@
-
 @extends('layouts.master')
+
 @section('content')
     <div class="page-wrapper">
         <div class="content container-fluid">
@@ -16,8 +16,10 @@
                     </div>
                 </div>
             </div>
+
             {{-- message --}}
             {!! Toastr::message() !!}
+
             <div class="student-group-form">
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
@@ -42,6 +44,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card card-table comman-shadow">
@@ -65,27 +68,25 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table
-                                    class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
+                                <table class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
                                     <thead class="student-thread">
-                                        <tr>
-                                            <th>
-                                                <div class="form-check check-tables">
-                                                    <input class="form-check-input" type="checkbox" value="something">
-                                                </div>
-                                            </th>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Class</th>
-                                            <th>DOB</th>
-                                            <th>Parent Name</th>
-                                            <th>Mobile Number</th>
-                                            <th>Address</th>
-                                            <th class="text-end">Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>
+                                            <div class="form-check check-tables">
+                                                <input class="form-check-input" type="checkbox" value="something">
+                                            </div>
+                                        </th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Class</th>
+                                        <th>DOB</th>
+                                        <th>Mobile Number</th>
+{{--                                        <th>Address</th>--}}
+                                        <th class="text-end">Action</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($studentList as $key=>$list )
+                                    @foreach ($studentList as $key => $list)
                                         <tr>
                                             <td>
                                                 <div class="form-check check-tables">
@@ -97,20 +98,19 @@
                                             <td hidden class="avatar">{{ $list->upload }}</td>
                                             <td>
                                                 <h2 class="table-avatar">
-                                                    <a href="student-details.html"class="avatar avatar-sm me-2">
-                                                        <img class="avatar-img rounded-circle" src="{{ Storage::url('student-photos/'.$list->upload) }}" alt="User Image">
+                                                    <a href="student-details.html" class="avatar avatar-sm me-2">
+                                                        <img class="avatar-img rounded-circle" src="{{ asset('storage/' . $list->upload) }}" alt="{{ $list->first_name }} {{ $list->last_name }}'s Image">
+
                                                     </a>
                                                     <a href="student-details.html">{{ $list->first_name }} {{ $list->last_name }}</a>
                                                 </h2>
                                             </td>
                                             <td>{{ $list->class }} {{ $list->section }}</td>
                                             <td>{{ $list->date_of_birth }}</td>
-                                            <td>Soeng Soeng</td>
                                             <td>{{ $list->phone_number }}</td>
-                                            <td>110 Sen Sok Steet,PP</td>
                                             <td class="text-end">
                                                 <div class="actions">
-                                                    <a href="{{ url('student/edit/'.$list->id) }}" class="btn btn-sm bg-danger-light">
+                                                    <a href="{{ url('student/edit/' . $list->id) }}" class="btn btn-sm bg-danger-light">
                                                         <i class="far fa-edit me-2"></i>
                                                     </a>
                                                     <a class="btn btn-sm bg-danger-light student_delete" data-bs-toggle="modal" data-bs-target="#studentUser">
@@ -119,7 +119,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        @endforeach
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -130,26 +130,26 @@
         </div>
     </div>
 
-    {{-- model student delete --}}
+    {{-- Modal for student deletion --}}
     <div class="modal custom-modal fade" id="studentUser" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="form-header">
                         <h3>Delete Student</h3>
-                        <p>Are you sure want to delete?</p>
+                        <p>Are you sure you want to delete?</p>
                     </div>
                     <div class="modal-btn delete-action">
                         <form action="{{ route('student/delete') }}" method="POST">
                             @csrf
+                            <input type="hidden" name="id" class="e_id" value="">
+                            <input type="hidden" name="avatar" class="e_avatar" value="">
                             <div class="row">
-                                <input type="hidden" name="id" class="e_id" value="">
-                                <input type="hidden" name="avatar" class="e_avatar" value="">
                                 <div class="col-6">
                                     <button type="submit" class="btn btn-primary continue-btn submit-btn" style="border-radius: 5px !important;">Delete</button>
                                 </div>
                                 <div class="col-6">
-                                    <a href="#" data-bs-dismiss="modal"class="btn btn-primary paid-cancel-btn">Cancel</a>
+                                    <a href="#" data-bs-dismiss="modal" class="btn btn-primary paid-cancel-btn">Cancel</a>
                                 </div>
                             </div>
                         </form>
@@ -158,17 +158,16 @@
             </div>
         </div>
     </div>
-    @section('script')
 
-    {{-- delete js --}}
-    <script>
-        $(document).on('click','.student_delete',function()
-        {
-            var _this = $(this).parents('tr');
-            $('.e_id').val(_this.find('.id').text());
-            $('.e_avatar').val(_this.find('.avatar').text());
-        });
-    </script>
+    @section('script')
+        {{-- delete js --}}
+        <script>
+            $(document).on('click', '.student_delete', function() {
+                var _this = $(this).closest('tr');
+                $('.e_id').val(_this.find('.id').text());
+                $('.e_avatar').val(_this.find('.avatar').text());
+            });
+        </script>
     @endsection
 
 @endsection
