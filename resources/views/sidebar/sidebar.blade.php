@@ -63,6 +63,20 @@
         </ul>
     </li>
 
+    
+
+                    <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Schedule</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+
 {{--    <li class="submenu {{set_active(['department/add/page','department/edit/page'])}} {{ request()->is('department/edit/*') ? 'active' : '' }}">--}}
 {{--        <a href="#"><i class="fas fa-building"></i>--}}
 {{--            <span> Departments</span>--}}
@@ -140,6 +154,20 @@
             <li><a href="{{ route('subject/add/page') }}" class="{{set_active(['subject/add/page'])}}">Subject Add</a></li>
         </ul>
     </li>
+
+
+                    <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Schedule</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+
                 <li>
                     <a href="{{ route('reservations.index') }}"><i class="fas fa-clipboard-list"></i> <span>My Reservations</span></a>
                 </li>
@@ -164,6 +192,22 @@
             <li><a href="{{ route('student/add/page') }}" class="{{set_active(['student/add/page'])}}">Student Add</a></li>
         </ul>
     </li>
+
+    
+
+                    <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Schedule</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+
+
                 <li>
                     <a href="{{ route('reservations.index') }}"><i class="fas fa-clipboard-list"></i> <span>My Reservations</span></a>
                 </li>
@@ -215,6 +259,20 @@
                         <span>Teacher Space</span>
                     </a>
                 </li>
+
+                
+
+                <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Schedule</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
                 @endif
 
 
