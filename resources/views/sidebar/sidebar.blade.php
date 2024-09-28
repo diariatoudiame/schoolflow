@@ -68,12 +68,12 @@
 {{--            <span> Departments</span>--}}
 {{--            <span class="menu-arrow"></span>--}}
 {{--        </a>--}}
-        <ul>
-            <li><a href="{{ route('department/list/page') }}" class="{{set_active(['department/list/page'])}} {{ request()->is('department/edit/*') ? 'active' : '' }}">Department List</a></li>
-            <li><a href="{{ route('department/add/page') }}" class="{{set_active(['department/add/page'])}}">Department Add</a></li>
-            <li><a>Department Edit</a></li>
-        </ul>
-    </li>
+{{--        <ul>--}}
+{{--            <li><a href="{{ route('department/list/page') }}" class="{{set_active(['department/list/page'])}} {{ request()->is('department/edit/*') ? 'active' : '' }}">Department List</a></li>--}}
+{{--            <li><a href="{{ route('department/add/page') }}" class="{{set_active(['department/add/page'])}}">Department Add</a></li>--}}
+{{--            <li><a>Department Edit</a></li>--}}
+{{--        </ul>--}}
+{{--    </li>--}}
 
     <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}} {{ request()->is('subject/edit/*') ? 'active' : '' }}">
         <a href="#"><i class="fas fa-book-reader"></i>
@@ -224,6 +224,8 @@
                 <li>
 {{--                    <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>--}}
                     <a href="{{ route('book/list/page') }}"><i class="fas fa-book"></i> <span>Library</span></a>
+                    <a href="{{ route('timetable.index') }}"><i class="fas fa-calendar-alt"></i> <span>TimeTable</span></a>
+
 
                 </li>
             </ul>

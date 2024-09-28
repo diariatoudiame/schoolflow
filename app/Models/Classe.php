@@ -19,4 +19,6 @@ class Classe extends Model
             ->withPivot('academic_year'); // Inclure l'année académique dans la relation
 
     }
+
+
 }
