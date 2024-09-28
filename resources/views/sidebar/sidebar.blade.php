@@ -63,7 +63,7 @@
         </ul>
     </li>
 
-    
+
 
                     <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
                         <a href="#"><i class="fas fa-book-reader"></i>
@@ -73,7 +73,7 @@
                         <ul>
                             <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
                             </li>
-                            
+
                         </ul>
                     </li>
 
@@ -157,14 +157,14 @@
 
 
                     <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
-                        <a href="#"><i class="fas fa-book-reader"></i>
+                        <a href="#"><i class="fas fa-calendar-alt"></i>
                             <span> Schedule</span>
                             <span class="menu-arrow"></span>
                         </a>
                         <ul>
                             <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
                             </li>
-                            
+
                         </ul>
                     </li>
 
@@ -180,7 +180,7 @@
                 </li>
 @endif
 
-@if(auth()->user()->role_name === 'Student')
+@if(auth()->user()->role_name === 'Admin')
     {{-- Menu pour Student --}}
     <li class="submenu {{set_active(['student/list','student/add/page'])}} {{ (request()->is('student/edit/*')) ? 'active' : '' }}">
         <a href="#"><i class="fas fa-graduation-cap"></i>
@@ -192,18 +192,18 @@
             <li><a href="{{ route('student/add/page') }}" class="{{set_active(['student/add/page'])}}">Student Add</a></li>
         </ul>
     </li>
-
-    
+@endif
+                @if(auth()->user()->role_name === 'Student')
 
                     <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
-                        <a href="#"><i class="fas fa-book-reader"></i>
+                        <a href="#"><i class="fas fa-calendar-alt"></i>
                             <span> Schedule</span>
                             <span class="menu-arrow"></span>
                         </a>
                         <ul>
                             <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
                             </li>
-                            
+
                         </ul>
                     </li>
 
@@ -260,7 +260,7 @@
                     </a>
                 </li>
 
-                
+
 
                 <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
                         <a href="#"><i class="fas fa-book-reader"></i>
@@ -270,7 +270,7 @@
                         <ul>
                             <li>    <a href="{{ route('admin.calendar') }}" class="btn btn-primary mb-3">Afficher le Calendrier</a>
                             </li>
-                            
+
                         </ul>
                     </li>
                 @endif
@@ -282,7 +282,7 @@
                 <li>
 {{--                    <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>--}}
                     <a href="{{ route('book/list/page') }}"><i class="fas fa-book"></i> <span>Library</span></a>
-                    <a href="{{ route('timetable.index') }}"><i class="fas fa-calendar-alt"></i> <span>TimeTable</span></a>
+
 
 
                 </li>

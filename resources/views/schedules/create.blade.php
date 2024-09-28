@@ -48,6 +48,15 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="teacher_id">Class</label>
+            <select name="class_id" class="form-control" required>
+                @foreach ($classes as $classe)
+                    <option value="{{ $classe->id }}">{{ $classe->class_name }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 </div>

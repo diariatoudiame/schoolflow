@@ -46,7 +46,7 @@
                                 <p class="card-text">Manage the class timetable if you are designated as the homeroom teacher.</p>
                             </div>
                             <div class="card-footer">
-                                <a href="#" class="btn btn-primary">Access</a>
+                                <a href="{{ route('admin.calendar') }}" class="btn btn-primary">Access</a>
                             </div>
                         </div>
                     </div>
@@ -65,17 +65,17 @@
                     </div>
 
                     <!-- Card 5: Download study material -->
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Study Material</h5>
-                                <p class="card-text">Download and share study material for your students.</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="btn btn-primary">Download</a>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="col-md-4 mb-4">--}}
+{{--                        <div class="card h-100">--}}
+{{--                            <div class="card-body">--}}
+{{--                                <h5 class="card-title">Study Material</h5>--}}
+{{--                                <p class="card-text">Download and share study material for your students.</p>--}}
+{{--                            </div>--}}
+{{--                            <div class="card-footer">--}}
+{{--                                <a href="#" class="btn btn-primary">Download</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
             </div>
         </div>

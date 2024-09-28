@@ -123,6 +123,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('/teacher/profile/edit', 'editProfile')->name('teacher.profile.edit');
 
 
+
         //-----------------------Schedules-----------------------------------//
         
         Route::get('/admin/calendar', [ScheduleController::class, 'index'])->name('admin.calendar');
@@ -138,7 +139,9 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
             Route::put('schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update');
             Route::delete('schedules/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
             Route::resource('schedules', ScheduleController::class);
-            
+
+
+
         });
 
 
