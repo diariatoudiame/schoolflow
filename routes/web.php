@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Setting;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -119,6 +120,25 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         //New
         Route::put('teacher/profile',  'update')->name('teacher.profile.update');
         Route::get('/teacher/profile/edit', 'editProfile')->name('teacher.profile.edit');
+
+
+        //-----------------------Schedules-----------------------------------//
+        
+        Route::get('/admin/calendar', [ScheduleController::class, 'index'])->name('admin.calendar');
+        Route::put('/admin/schedules/{schedule}', [ScheduleController::class, 'update'])->name('schedules.update');
+        Route::delete('/admin/schedules/{schedule}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
+        Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
+
+        Route::prefix('admin')->group(function () {
+            Route::get('schedules', [ScheduleController::class, 'index'])->name('schedules.index');
+            Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
+            Route::post('schedules', [ScheduleController::class, 'store'])->name('schedules.store');
+            Route::get('schedules/{id}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
+            Route::put('schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update');
+            Route::delete('schedules/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
+            Route::resource('schedules', ScheduleController::class);
+            
+        });
 
 
 
