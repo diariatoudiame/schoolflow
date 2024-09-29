@@ -180,6 +180,81 @@
                 </li>
 @endif
 
+@if(auth()->user()->role_name === 'Student')
+    {{-- Menu pour Student --}}
+    {{-- Voir le Profil de l'Enseignant --}}
+        <li class="{{ set_active(['student/teacher/*']) }}">
+            <a href="{{ route('student.teacher.profile', auth()->user()->id) }}">
+                <i class="fas fa-user-tie"></i>
+                <span> Profil de l'Enseignant</span>
+            </a>
+        </li>
+
+        {{-- Afficher ses propres matières de cours --}}
+        <li class="{{ set_active(['student/courses']) }}">
+            <a href="{{ route('student.courses') }}">
+                <i class="fas fa-book"></i>
+                <span> Mes Cours</span>
+            </a>
+        </li>
+
+        {{-- Consulter ses propres notes --}}
+        <li class="{{ set_active(['student/grades']) }}">
+            <a href="{{ route('student.grades') }}">
+                <i class="fas fa-graduation-cap"></i>
+                <span> Mes Notes</span>
+            </a>
+        </li>
+
+        {{-- Consulter l'horaire des cours --}}
+        <li class="{{ set_active(['student/schedule']) }}">
+            <a href="{{ route('student.schedule') }}">
+                <i class="fas fa-calendar-alt"></i>
+                <span> Mon Horaire</span>
+            </a>
+        </li>
+
+        {{-- Afficher les paiements --}}
+        <li class="{{ set_active(['student/payments']) }}">
+            <a href="{{ route('student.payments') }}">
+                <i class="fas fa-wallet"></i>
+                <span> Paiements</span>
+            </a>
+        </li>
+        {{-- Afficher le statut de la bibliothèque et des livres --}}
+        <li class="{{ set_active(['student/library']) }}">
+            <a href="{{ route('student.library.status') }}">
+                <i class="fas fa-book-reader"></i>
+                <span> Statut Bibliothèque</span>
+            </a>
+        </li>
+
+        {{-- Afficher le tableau d'affichage --}}
+        <li class="{{ set_active(['student/notice-board']) }}">
+            <a href="{{ route('student.notice.board') }}">
+                <i class="fas fa-bullhorn"></i>
+                <span> Tableau d'Affichage</span>
+            </a>
+        </li>
+
+        {{-- Afficher les événements scolaires dans le calendrier --}}
+        <li class="{{ set_active(['student/calendar']) }}">
+            <a href="{{ route('student.calendar') }}">
+                <i class="fas fa-calendar-day"></i>
+                <span> Calendrier</span>
+            </a>
+        </li>
+    <li class="submenu {{set_active(['student/list','student/add/page'])}} {{ (request()->is('student/edit/*')) ? 'active' : '' }}">
+        <a href="#"><i class="fas fa-graduation-cap"></i>
+            <span> Students</span>
+            <span class="menu-arrow"></span>
+        </a>
+        <ul>
+            <li><a href="{{ route('student/list') }}" class="{{set_active(['student/list'])}}">Student List</a></li>
+            <li><a href="{{ route('student/add/page') }}" class="{{set_active(['student/add/page'])}}">Student Add</a></li>
+        </ul>
+    </li>
+
 
                 @if(auth()->user()->role_name === 'Student')
 
@@ -194,6 +269,7 @@
 
                         </ul>
                     </li>
+
 
 
                 <li>

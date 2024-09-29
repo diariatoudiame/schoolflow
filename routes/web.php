@@ -9,7 +9,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Setting;
-use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TimetableController;
@@ -103,10 +102,30 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('student/add/page', 'studentAdd')->middleware('auth')->name('student/add/page'); // page student
         Route::post('student/add/save', 'studentSave')->name('student/add/save'); // save record student
         Route::get('student/edit/{id}', 'studentEdit'); // view for edit
-        Route::put('student/update/{id}', 'studentUpdate')->name('student/update'); // update record student
+        Route::post('student/update', 'studentUpdate')->name('student/update'); // update record student
         Route::post('student/delete', 'studentDelete')->name('student/delete'); // delete record student
         Route::get('student/profile/{id}', 'studentProfile')->middleware('auth'); // profile student
     });
+    // ------------------------ student functionalities -------------------------------//
+Route::controller(StudentController::class)->group(function () {
+    // Voir le profil de l'enseignant
+    Route::get('student/teacher/{id}', 'showTeacherProfile')->middleware('auth')->name('student.teacher.profile');
+    // Afficher ses propres matières de cours
+    Route::get('student/courses', 'showCourses')->middleware('auth')->name('student.courses');
+    // Consulter ses propres notes
+    Route::get('student/grades', 'showGrades')->middleware('auth')->name('student.grades');
+    // Consulter l'horaire des cours
+    Route::get('student/schedule', 'showSchedule')->middleware('auth')->name('student.schedule');
+    // Afficher les paiements
+    Route::get('student/payments', 'showPayments')->middleware('auth')->name('student.payments');
+    // Afficher le statut de la bibliothèque et du livre
+    Route::get('student/library', 'showLibraryStatus')->middleware('auth')->name('student.library.status');
+    // Afficher le tableau d'affichage
+    Route::get('student/notice-board', 'showNoticeBoard')->middleware('auth')->name('student.notice.board');
+    // Afficher les événements scolaires dans le calendrier
+    Route::get('student/calendar', 'showCalendar')->middleware('auth')->name('student.calendar');
+});
+
 
     // ------------------------ teacher -------------------------------//
     Route::controller(TeacherController::class)->group(function () {
