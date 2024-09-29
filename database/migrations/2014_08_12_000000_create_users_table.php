@@ -17,12 +17,12 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('user_id')->nullable();
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('date_of_birth')->nullable();
-            $table->string('join_date')->nullable();
+            $table->string('email')->unique(); // Email should be unique
+            $table->date('date_of_birth')->nullable(); // Store as date type
+            $table->date('join_date')->nullable(); // Store as date type
             $table->string('phone_number')->nullable();
-            $table->string('status')->nullable();
-            $table->string('role_name')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active'); // Set default status
+            $table->string('role_name')->default('user'); // Set default role name as 'user'
             $table->string('avatar')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -30,7 +30,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
     }
-    
 
     /**
      * Reverse the migrations.

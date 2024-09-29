@@ -57,9 +57,9 @@
         </a>
         <ul>
             <li><a href="{{ route('student/list') }}"  class="{{set_active(['student/list','student/grid'])}}">Student List</a></li>
-            <li><a href="{{ route('student/add/page') }}" class="{{set_active(['student/add/page'])}}">Student Add</a></li>
+            <!-- <li><a href="{{ route('student/add/page') }}" class="{{set_active(['student/add/page'])}}">Student Add</a></li>
             <li><a class="{{ (request()->is('student/edit/*')) ? 'active' : '' }}">Student Edit</a></li>
-            <li><a href=""  class="{{ (request()->is('student/profile/*')) ? 'active' : '' }}">Student View</a></li>
+            <li><a href=""  class="{{ (request()->is('student/profile/*')) ? 'active' : '' }}">Student View</a></li> -->
         </ul>
     </li>
 
@@ -108,7 +108,7 @@
                             <span>Classes</span>
                         </a>
                     </li>
-    <li class="submenu {{set_active(['invoice/list/page','invoice/add/page'])}} {{ request()->is('invoice/edit/*') ? 'active' : '' }}">
+    <!-- <li class="submenu {{set_active(['invoice/list/page','invoice/add/page'])}} {{ request()->is('invoice/edit/*') ? 'active' : '' }}">
         <a href="#"><i class="fas fa-clipboard"></i>
             <span> Invoices</span>
             <span class="menu-arrow"></span>
@@ -117,7 +117,7 @@
             <li><a class="{{set_active(['invoice/list/page'])}}" href="{{ route('invoice/list/page') }}">Invoices List</a></li>
             <li><a class="{{set_active(['invoice/add/page'])}}" href="{{ route('invoice/add/page') }}">Add Invoices</a></li>
         </ul>
-    </li>
+    </li> -->
 @endif
 
 @if(auth()->user()->role_name === 'Teachers')
@@ -182,7 +182,7 @@
 
 @if(auth()->user()->role_name === 'Student')
     {{-- Menu pour Student --}}
-    <li class="submenu {{set_active(['student/list','student/add/page'])}} {{ (request()->is('student/edit/*')) ? 'active' : '' }}">
+    <!-- <li class="submenu {{set_active(['student/list','student/add/page'])}} {{ (request()->is('student/edit/*')) ? 'active' : '' }}">
         <a href="#"><i class="fas fa-graduation-cap"></i>
             <span> Students</span>
             <span class="menu-arrow"></span>
@@ -191,7 +191,7 @@
             <li><a href="{{ route('student/list') }}" class="{{set_active(['student/list'])}}">Student List</a></li>
             <li><a href="{{ route('student/add/page') }}" class="{{set_active(['student/add/page'])}}">Student Add</a></li>
         </ul>
-    </li>
+    </li> -->
 
     
 
@@ -275,7 +275,7 @@
                     </li>
                 @endif
 
-
+<!-- 
                 <li class="menu-title">
                     <span>Management</span>
                 </li>
@@ -283,7 +283,7 @@
 {{--                    <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>--}}
                     <a href="{{ route('book/list/page') }}"><i class="fas fa-book"></i> <span>Library</span></a>
 
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

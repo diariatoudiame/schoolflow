@@ -22,6 +22,16 @@
         </div>
 
         <div class="form-group">
+            <label for="class_id">Classe</label>
+            <select name="class_id" class="form-control" required>
+                @foreach ($classes as $class)
+                    <option value="{{ $class->id }}">{{ $class->class_name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+
+        <div class="form-group">
             <label for="start_time">Heure de Début</label>
             <input type="time" name="start_time" class="form-control" value="{{ $schedule->start_time }}" required>
         </div>

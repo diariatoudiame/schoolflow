@@ -54,16 +54,43 @@
                     <div class="card card-table comman-shadow">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-stripped table table-hover table-center mb-0" id="UsersList">
+                                <table class="table table-stripped table-hover table-center mb-0" id="UsersList">
                                     <thead class="student-thread">
                                     <tr>
                                         <th>User ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone Number</th>
+                                        <th>Status</th> <!-- New column for status -->
                                         <th class="text-end">Action</th>
                                     </tr>
                                     </thead>
+                                    <tbody>
+                                    @foreach($users as $user)
+                                        <tr>
+                                            <td>{{ $user->id }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->phone_number }}</td>
+                                            <td>
+                                                @if($user->status == 'active')
+                                                    <span class="badge bg-success">Active</span>
+                                                @else
+                                                    <span class="badge bg-danger">Inactive</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="#" class="btn btn-warning toggle-status" data-user-id="{{ $user->id }}" data-status="{{ $user->status }}">
+                                                    @if($user->status == 'active')
+                                                        Deactivate
+                                                    @else
+                                                        Activate
+                                                    @endif
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -154,7 +181,6 @@
         </div>
     </div>
 
-
     {{-- modal delete --}}
     <div class="modal custom-modal fade" id="delete" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
@@ -174,7 +200,7 @@
                                         <button type="submit" class="btn btn-primary paid-continue-btn" style="width: 100%;">Delete</button>
                                     </div>
                                     <div class="col-6">
-                                        <a data-bs-dismiss="modal" class="btn btn-primary paid-cancel-btn">Cancel</a>
+                                        <a data-bs-dismiss="modal" class="btn btn-primary paid-cancel-btn" style="width: 100%;">Cancel</a>
                                     </div>
                                 </div>
                             </form>
@@ -185,76 +211,37 @@
         </div>
     </div>
 
-    @section('script')
-        {{-- delete js --}}
-        <script>
-            $(document).on('click','.delete',function()
-            {
-                var _this = $(this).parents('tr');
-                $('.e_user_id').val(_this.find('.user_id').data('user_id'));
-            });
-        </script>
+@endsection
 
-        {{-- get user all js --}}
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#UsersList').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ordering: true,
-                    searching: true,
-                    ajax: {
-                        url:"{{ route('get-users-data') }}",
-                    },
-                    columns: [
-                        {
-                            data: 'user_id',
-                            name: 'user_id',
-                        },
-                        {
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
-                            data: 'email',
-                            name: 'email'
-                        },
-                        {
-                            data: 'phone_number',
-                            name: 'phone_number'
-                        },
-                        {
-                            data: 'actions',
-                            name: 'actions',
-                            orderable: false,
-                            searchable: false,
-                            render: function(data, type, row) {
-                                return `
-                            <div class="text-end">
-                                <a href="/user/${row.user_id}/edit" class="btn btn-sm btn-info">Edit</a>
-                                <a href="#" class="btn btn-sm btn-danger delete" data-user_id="${row.user_id}" data-toggle="modal" data-target="#delete">Delete</a>
-                                <a href="/user/${row.user_id}/details" class="btn btn-sm btn-secondary">View</a>
-                            </div>
-                        `;
-                            }
-                        },
-                    ],
-                    "language": {
-                        "lengthMenu": "Display _MENU_ records per page",
-                        "zeroRecords": "Nothing found - sorry",
-                        "info": "Showing page _PAGE_ of _PAGES_",
-                        "infoEmpty": "No records available",
-                        "infoFiltered": "(filtered from _MAX_ total records)",
-                        "search": "Search:",
-                        "paginate": {
-                            "first": "First",
-                            "last": "Last",
-                            "next": "Next",
-                            "previous": "Previous"
-                        }
-                    }
-                });
-            });
-        </script>
-    @endsection
+@section('scripts')
+<script>
+    $(document).on('click', '.toggle-status', function() {
+    var userId = $(this).data('user-id'); // Récupérer l'ID de l'utilisateur
+    var currentStatus = $(this).data('current-status'); // Récupérer le statut actuel
+    var newStatus = (currentStatus === 'active') ? 'inactive' : 'active'; // Basculez le statut
+
+    // Effectuer la requête AJAX
+    $.ajax({
+        url: "{{ route('user.toggleStatus') }}",
+        method: 'POST',
+        data: {
+            _token: "{{ csrf_token() }}",
+            user_id: userId,
+            status: newStatus
+        },
+        success: function(response) {
+            if (response.success) {
+                location.reload(); // Recharger la page pour afficher le nouvel état
+            } else {
+                alert('Error: ' + response.message);
+            }
+        },
+        error: function(xhr) {
+            alert('An error occurred: ' + xhr.responseJSON.message);
+        }
+    });
+});
+
+</script>
+
 @endsection

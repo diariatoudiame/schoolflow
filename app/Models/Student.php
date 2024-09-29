@@ -31,6 +31,13 @@ class Student extends Model
             ->withPivot('academic_year'); // Inclure l'année académique dans la relation
     }
 
+    public function schoolClass()
+    {
+        return $this->belongsTo(SchoolClass::class, 'class_id');
+    }
+
+    
+
 //    public function classes()
 //    {
 //        return $this->belongsToMany(Classe::class);

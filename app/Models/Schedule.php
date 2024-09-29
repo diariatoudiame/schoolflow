@@ -15,6 +15,7 @@ class Schedule extends Model
         'end_time',
         'subject_id',
         'teacher_id',
+        'class_id',
     ];
 
     public function subject()
@@ -25,6 +26,11 @@ class Schedule extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(SchoolClass::class, 'class_id');
     }
 }
 

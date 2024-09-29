@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AccountCreated;
-use Illuminate\Http\Request;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -165,4 +165,71 @@ class UserManagementController extends Controller
         Toastr::success('Utilisateur supprimé avec succès :)', 'Succès');
         return redirect()->back();
     }
+
+        // Méthode pour changer le mot de passe
+        public function changePassword(Request $request)
+        {
+            // Valider les données du formulaire
+            $request->validate([
+                'current_password' => 'required',
+                'new_password' => 'required|min:8|confirmed',
+            ]);
+    
+            // Récupérer l'utilisateur connecté
+            $user = auth()->user();
+    
+            // Vérifier si le mot de passe actuel est correct
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'Le mot de passe actuel est incorrect.']);
+            }
+    
+            // Mettre à jour le mot de passe
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+    
+            return back()->with('status', 'Votre mot de passe a été modifié avec succès.');
+        }
+
+
+        // public function toggleStatus(Request $request)
+        // {
+        //     $user = User::find($request->user_id);
+            
+        //     if ($user) {
+        //         $user->status = $request->status;
+        //         $user->save();
+                
+        //         return response()->json(['success' => true]);
+        //     }
+            
+        //     return response()->json(['success' => false]);
+        // }
+
+        public function toggleStatus(Request $request)
+        {
+            // Validation des données de la requête
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required|exists:users,id',
+                'status' => 'required|in:active,inactive',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
+            }
+
+            // Récupération de l'utilisateur
+            $user = User::find($request->user_id);
+
+            // Mise à jour du statut de l'utilisateur
+            if ($user) {
+                $user->status = $request->status;
+                $user->save();
+
+                return response()->json(['success' => true, 'message' => 'User status updated successfully.']);
+            }
+
+            return response()->json(['success' => false, 'message' => 'User not found.'], 404);
+        }
+
+    
 }

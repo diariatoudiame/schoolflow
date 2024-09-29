@@ -45,6 +45,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Book::class, 'reservations');
 
     }
+    
+    public function schoolClass()
+    {
+        return $this->belongsTo(SchoolClass::class, 'class_id'); // Assurez-vous que 'class_id' est la clé étrangère
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
