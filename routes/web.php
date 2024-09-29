@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ScheduleController;
@@ -205,7 +206,15 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::put('class/update/{id}', 'updateRecord')->name('class/update'); // class/update
         Route::post('class/delete', 'deleteRecord')->middleware('auth')->name('class/delete'); // class/delete
         Route::get('class/show/{id}', 'show')->middleware('auth')->name('class/show'); // class/show
+        Route::get('teacher/classes', 'index')->middleware('auth')->name('teacher.classe'); // class/list/page
+
     });
+
+    // ----------------------- Grades -----------------------------//
+    Route::get('/grades/{id}', [GradeController::class, 'index'])->name('grades.index');
+    Route::post('/grades', [GradeController::class, 'store'])->name('grades.store');
+    Route::delete('/grades/delete', [GradeController::class, 'destroy'])->name('grades.destroy');
+    Route::put('grades/update', 'GradeController@update')->name('grades.update');
 
     // ----------------------- invoice -----------------------------//
     Route::controller(InvoiceController::class)->group(function () {

@@ -180,19 +180,7 @@
                 </li>
 @endif
 
-@if(auth()->user()->role_name === 'Admin')
-    {{-- Menu pour Student --}}
-    <li class="submenu {{set_active(['student/list','student/add/page'])}} {{ (request()->is('student/edit/*')) ? 'active' : '' }}">
-        <a href="#"><i class="fas fa-graduation-cap"></i>
-            <span> Students</span>
-            <span class="menu-arrow"></span>
-        </a>
-        <ul>
-            <li><a href="{{ route('student/list') }}" class="{{set_active(['student/list'])}}">Student List</a></li>
-            <li><a href="{{ route('student/add/page') }}" class="{{set_active(['student/add/page'])}}">Student Add</a></li>
-        </ul>
-    </li>
-@endif
+
                 @if(auth()->user()->role_name === 'Student')
 
                     <li class="submenu {{set_active(['subject/list/page','subject/add/page'])}}">
