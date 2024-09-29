@@ -11,6 +11,7 @@ use App\Http\Controllers\Setting;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -122,6 +123,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('/teacher/profile/edit', 'editProfile')->name('teacher.profile.edit');
 
 
+
         //-----------------------Schedules-----------------------------------//
         
         Route::get('/admin/calendar', [ScheduleController::class, 'index'])->name('admin.calendar');
@@ -137,7 +139,9 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
             Route::put('schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update');
             Route::delete('schedules/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
             Route::resource('schedules', ScheduleController::class);
-            
+
+
+
         });
 
 
@@ -174,17 +178,12 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
     });
 
 
-    // ----------------------- department -----------------------------//
-    Route::controller(DepartmentController::class)->group(function () {
-        Route::get('department/list/page', 'departmentList')->middleware('auth')->name('department/list/page'); // department/list/page
-        Route::get('department/add/page', 'indexDepartment')->middleware('auth')->name('department/add/page'); // page add department
-        Route::get('department/edit/{department_id}', 'editDepartment'); // page add department
-        Route::post('department/save', 'saveRecord')->middleware('auth')->name('department/save'); // department/save
-        Route::post('department/update', 'updateRecord')->middleware('auth')->name('department/update'); // department/update
-        Route::post('department/delete', 'deleteRecord')->middleware('auth')->name('department/delete'); // department/delete
-        Route::get('get-data-list', 'getDataList')->name('get-data-list'); // get data list
+    // ----------------------- Timetable -----------------------------//
+    Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable.index');
 
-    });
+    // Stocker une nouvelle entrée de planning
+    Route::post('/store', [TimetableController::class, 'store'])->name('timetable.store');
+
 
     // ----------------------- subject -----------------------------//
     Route::controller(SubjectController::class)->group(function () {

@@ -14,6 +14,8 @@ class Subject extends Model
 
     ];
 
+
+
     /** auto genarate id */
     protected static function boot()
     {
