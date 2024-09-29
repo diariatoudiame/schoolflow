@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountCreated;
 use App\Models\Classe;
 use App\Models\Student;
 use App\Models\User; // Import User model
 use Brian2694\Toastr\Facades\Toastr;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash; // Import Hash for password
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+
+// Import Hash for password
 
 class StudentController extends Controller
 {
@@ -80,6 +84,7 @@ class StudentController extends Controller
             // Attach the student to classes and academic year
             $student->classes()->attach($request->class_id, ['academic_year' => $request->academic_year]);
 
+            Mail::to($user->email)->send(new AccountCreated($user));
             DB::commit();
             Toastr::success('Student and user account successfully added :)', 'Success');
             return redirect()->route('student/list');

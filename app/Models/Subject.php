@@ -14,6 +14,11 @@ class Subject extends Model
 
     ];
 
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
+    }
+
     /** auto genarate id */
     protected static function boot()
     {

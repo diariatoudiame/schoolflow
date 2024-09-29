@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classe; // Import the Classe model
+use App\Models\Schedule;
 use Brian2694\Toastr\Facades\Toastr;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClassController extends Controller
 {
@@ -14,6 +16,21 @@ class ClassController extends Controller
     {
         $classes = Classe::all();
         return view('classes.classe_list', compact('classes'));
+    }
+
+    public function index()
+    {
+        // Récupérer l'ID du professeur connecté
+        $teacher = auth()->user()->teacher;
+
+        // Récupérer les classes où le professeur a des cours
+        $classes = Schedule::where('teacher_id', $teacher->id)
+            ->with('class') // Assurez-vous que votre modèle Schedule a une relation avec ClassModel
+            ->get()
+            ->pluck('class'); // Extraire les classes
+
+        // Retourner la vue avec les classes
+        return view('grades.teacher_class', compact('classes'));
     }
 
     /** Display classes in grid */

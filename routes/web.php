@@ -4,11 +4,14 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Setting;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -141,6 +144,28 @@ Route::controller(StudentController::class)->group(function () {
 
 
 
+        //-----------------------Schedules-----------------------------------//
+        
+        Route::get('/admin/calendar', [ScheduleController::class, 'index'])->name('admin.calendar');
+        Route::put('/admin/schedules/{schedule}', [ScheduleController::class, 'update'])->name('schedules.update');
+        Route::delete('/admin/schedules/{schedule}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
+        Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
+
+        Route::prefix('admin')->group(function () {
+            Route::get('schedules', [ScheduleController::class, 'index'])->name('schedules.index');
+            Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
+            Route::post('schedules', [ScheduleController::class, 'store'])->name('schedules.store');
+            Route::get('schedules/{id}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
+            Route::put('schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update');
+            Route::delete('schedules/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
+            Route::resource('schedules', ScheduleController::class);
+
+
+
+        });
+
+
+
     });
     Route::get('/teacher/space', function () {
         return view('teacher.space-teacher'); // Assurez-vous que le fichier Blade est enregistré sous teacher/dashboard.blade.php
@@ -173,17 +198,12 @@ Route::controller(StudentController::class)->group(function () {
     });
 
 
-    // ----------------------- department -----------------------------//
-    Route::controller(DepartmentController::class)->group(function () {
-        Route::get('department/list/page', 'departmentList')->middleware('auth')->name('department/list/page'); // department/list/page
-        Route::get('department/add/page', 'indexDepartment')->middleware('auth')->name('department/add/page'); // page add department
-        Route::get('department/edit/{department_id}', 'editDepartment'); // page add department
-        Route::post('department/save', 'saveRecord')->middleware('auth')->name('department/save'); // department/save
-        Route::post('department/update', 'updateRecord')->middleware('auth')->name('department/update'); // department/update
-        Route::post('department/delete', 'deleteRecord')->middleware('auth')->name('department/delete'); // department/delete
-        Route::get('get-data-list', 'getDataList')->name('get-data-list'); // get data list
+    // ----------------------- Timetable -----------------------------//
+    Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable.index');
 
-    });
+    // Stocker une nouvelle entrée de planning
+    Route::post('/store', [TimetableController::class, 'store'])->name('timetable.store');
+
 
     // ----------------------- subject -----------------------------//
     Route::controller(SubjectController::class)->group(function () {
@@ -205,7 +225,15 @@ Route::controller(StudentController::class)->group(function () {
         Route::put('class/update/{id}', 'updateRecord')->name('class/update'); // class/update
         Route::post('class/delete', 'deleteRecord')->middleware('auth')->name('class/delete'); // class/delete
         Route::get('class/show/{id}', 'show')->middleware('auth')->name('class/show'); // class/show
+        Route::get('teacher/classes', 'index')->middleware('auth')->name('teacher.classe'); // class/list/page
+
     });
+
+    // ----------------------- Grades -----------------------------//
+    Route::get('/grades/{id}', [GradeController::class, 'index'])->name('grades.index');
+    Route::post('/grades', [GradeController::class, 'store'])->name('grades.store');
+    Route::delete('/grades/delete', [GradeController::class, 'destroy'])->name('grades.destroy');
+    Route::put('grades/update', 'GradeController@update')->name('grades.update');
 
     // ----------------------- invoice -----------------------------//
     Route::controller(InvoiceController::class)->group(function () {

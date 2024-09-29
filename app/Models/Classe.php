@@ -15,8 +15,10 @@ class Classe extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'class_student')
+        return $this->belongsToMany(Student::class, 'class_student','class_id','student_id')
             ->withPivot('academic_year'); // Inclure l'année académique dans la relation
 
     }
+
+
 }
