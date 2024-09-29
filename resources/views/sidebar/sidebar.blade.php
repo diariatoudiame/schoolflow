@@ -244,6 +244,7 @@
                 <span> Calendrier</span>
             </a>
         </li>
+                @endif
     <li class="submenu {{set_active(['student/list','student/add/page'])}} {{ (request()->is('student/edit/*')) ? 'active' : '' }}">
         <a href="#"><i class="fas fa-graduation-cap"></i>
             <span> Students</span>
