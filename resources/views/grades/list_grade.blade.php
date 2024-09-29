@@ -39,6 +39,7 @@
                                 <table id="DataList" class="table border-0 star-student table-hover table-center mb-0 datatable table-striped">
                                     <thead class="note-thread">
                                     <tr>
+                                        <th>Student ID</th>
                                         <th>Student Name</th>
                                         <th>Subject</th>
                                         <th>Evaluation Type</th>
@@ -50,6 +51,7 @@
                                     <tbody>
                                     @foreach ($grades as $grade)
                                         <tr>
+                                            <td>{{ $grade->student->id }}</td>
                                             <td>{{ $grade->student->first_name }} {{ $grade->student->last_name }}</td>
                                             <td>{{ $grade->subject->subject_name }}</td>
                                             <td>{{ $grade->evaluation_type }}</td>
@@ -88,7 +90,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addGradeModalLabel">Add Grade</h5>
+                    <h5 class="modal-title" id="addGradeModalLabel">Add a Grade</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('grades.store') }}" method="POST">
@@ -201,18 +203,17 @@
                         <h3>Delete Grade</h3>
                         <p>Are you sure you want to delete this grade?</p>
                     </div>
-                    <form action="{{ route('grades.destroy') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <input type="hidden" name="id" id="grade_id">
-                        <div class="modal-footer">
+                    <div class="modal-footer">
+                        <form action="{{ route('grades.destroy') }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="grade_id" id="grade_id">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
