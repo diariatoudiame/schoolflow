@@ -130,7 +130,8 @@ class TeacherController extends Controller
         // Mise à jour de l'adresse e-mail de l'utilisateur associé
         $teacher->user->update(['email' => $request->email]);
 
-        return redirect()->route('teacher.space')->with('success', 'Profile updated successfully');
+        Toastr::success('Profile updated successfully :)', 'Success');
+        return back()->with('success', 'Profile updated successfully');
     }
 
 

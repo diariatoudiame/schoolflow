@@ -4,13 +4,14 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Setting;
-use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -109,10 +110,30 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('student/add/page', 'studentAdd')->middleware('auth')->name('student/add/page'); // page student
         Route::post('student/add/save', 'studentSave')->name('student/add/save'); // save record student
         Route::get('student/edit/{id}', 'studentEdit'); // view for edit
-        Route::put('student/update/{id}', 'studentUpdate')->name('student/update'); // update record student
+        Route::post('student/update', 'studentUpdate')->name('student/update'); // update record student
         Route::post('student/delete', 'studentDelete')->name('student/delete'); // delete record student
         Route::get('student/profile/{id}', 'studentProfile')->middleware('auth'); // profile student
     });
+    // ------------------------ student functionalities -------------------------------//
+Route::controller(StudentController::class)->group(function () {
+    // Voir le profil de l'enseignant
+    Route::get('student/teacher/{id}', 'showTeacherProfile')->middleware('auth')->name('student.teacher.profile');
+    // Afficher ses propres matières de cours
+    Route::get('student/courses', 'showCourses')->middleware('auth')->name('student.courses');
+    // Consulter ses propres notes
+    Route::get('student/grades', 'showGrades')->middleware('auth')->name('student.grades');
+    // Consulter l'horaire des cours
+    Route::get('student/schedule', 'showSchedule')->middleware('auth')->name('student.schedule');
+    // Afficher les paiements
+    Route::get('student/payments', 'showPayments')->middleware('auth')->name('student.payments');
+    // Afficher le statut de la bibliothèque et du livre
+    Route::get('student/library', 'showLibraryStatus')->middleware('auth')->name('student.library.status');
+    // Afficher le tableau d'affichage
+    Route::get('student/notice-board', 'showNoticeBoard')->middleware('auth')->name('student.notice.board');
+    // Afficher les événements scolaires dans le calendrier
+    Route::get('student/calendar', 'showCalendar')->middleware('auth')->name('student.calendar');
+});
+
 
     // ------------------------ teacher -------------------------------//
     Route::controller(TeacherController::class)->group(function () {
@@ -128,6 +149,7 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         //New
         Route::put('teacher/profile',  'update')->name('teacher.profile.update');
         Route::get('/teacher/profile/edit', 'editProfile')->name('teacher.profile.edit');
+
 
 
         //-----------------------Schedules-----------------------------------//
@@ -152,7 +174,9 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
             Route::put('schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update');
             Route::delete('schedules/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
             Route::resource('schedules', ScheduleController::class);
-            
+
+
+
         });
 
 
@@ -189,17 +213,12 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
     });
 
 
-    // ----------------------- department -----------------------------//
-    Route::controller(DepartmentController::class)->group(function () {
-        Route::get('department/list/page', 'departmentList')->middleware('auth')->name('department/list/page'); // department/list/page
-        Route::get('department/add/page', 'indexDepartment')->middleware('auth')->name('department/add/page'); // page add department
-        Route::get('department/edit/{department_id}', 'editDepartment'); // page add department
-        Route::post('department/save', 'saveRecord')->middleware('auth')->name('department/save'); // department/save
-        Route::post('department/update', 'updateRecord')->middleware('auth')->name('department/update'); // department/update
-        Route::post('department/delete', 'deleteRecord')->middleware('auth')->name('department/delete'); // department/delete
-        Route::get('get-data-list', 'getDataList')->name('get-data-list'); // get data list
+    // ----------------------- Timetable -----------------------------//
+    Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable.index');
 
-    });
+    // Stocker une nouvelle entrée de planning
+    Route::post('/store', [TimetableController::class, 'store'])->name('timetable.store');
+
 
     // ----------------------- subject -----------------------------//
     Route::controller(SubjectController::class)->group(function () {
@@ -221,7 +240,15 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::put('class/update/{id}', 'updateRecord')->name('class/update'); // class/update
         Route::post('class/delete', 'deleteRecord')->middleware('auth')->name('class/delete'); // class/delete
         Route::get('class/show/{id}', 'show')->middleware('auth')->name('class/show'); // class/show
+        Route::get('teacher/classes', 'index')->middleware('auth')->name('teacher.classe'); // class/list/page
+
     });
+
+    // ----------------------- Grades -----------------------------//
+    Route::get('/grades/{id}', [GradeController::class, 'index'])->name('grades.index');
+    Route::post('/grades', [GradeController::class, 'store'])->name('grades.store');
+    Route::delete('/grades/delete', [GradeController::class, 'destroy'])->name('grades.destroy');
+    Route::put('grades/update', 'GradeController@update')->name('grades.update');
 
     // ----------------------- invoice -----------------------------//
     Route::controller(InvoiceController::class)->group(function () {
