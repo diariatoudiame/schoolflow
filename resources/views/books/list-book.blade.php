@@ -111,9 +111,11 @@
                                                 </a>
                                                     @endif
                                                     @if(auth()->user()->role_name === 'Student')
+                                                        @if($book->status === 'available')
                                                         <a href="{{ url('reservations/create/'.$book->id) }}" class="btn btn-sm bg-danger-light">
                                                             <i class="fas fa-calendar-check"></i>
                                                         </a>
+                                                        @endif
                                                     @endif
                                             </div>
                                         </td>

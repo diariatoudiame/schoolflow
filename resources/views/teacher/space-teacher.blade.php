@@ -21,7 +21,7 @@
                                 <p class="card-text">Manage your own class or section, including student lists and class activities.</p>
                             </div>
                             <div class="card-footer">
-                                <a href="#" class="btn btn-primary">Access</a>
+                                <a href="{{ route('attendance.classe') }}" class="btn btn-primary">Access</a>
                             </div>
                         </div>
                     </div>

@@ -14,8 +14,30 @@ class ReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::with('book')->where('user_id', Auth::id())->get();
-        return view('reservations.my-reservations', compact('reservations'));
+        $bookReservees = Reservation::with('book')
+            ->whereHas('book', function ($query) {
+                $query->where('status', 'checked out');
+            })
+            ->get();
+        return view('reservations.my-reservations', compact('reservations','bookReservees'));
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Find the reservation by ID
+        $reservation = Reservation::with('book')->findOrFail($id);
+
+        // Update the status of the associated book to 'available'
+        $reservation->book->status = 'available';
+        $reservation->book->save();
+
+        // Optionally, you might want to delete the reservation or mark it as completed
+        // $reservation->delete(); // Uncomment this if you want to delete the reservation
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Book status updated to available successfully.');
+    }
+
 
     // Display the reservation form
     public function create($id)

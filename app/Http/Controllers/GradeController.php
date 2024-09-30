@@ -142,9 +142,10 @@ class GradeController extends Controller
 
 
     /** Show details of a specific grade */
-    public function show($id)
+    public function show()
     {
-        $grade = Grade::with(['student', 'subject'])->findOrFail($id);
-        return view('grade.show-grade', compact('grade'));
+        $student = auth()->user()->student; // Assurez-vous que l'utilisateur est authentifié et qu'il a un étudiant associé
+        $grades = $student->grades()->with('subject')->get(); // Récupérer les notes de l'étudiant avec les matières associées
+        return view('grades.my-grades', compact('grades'));
     }
 }

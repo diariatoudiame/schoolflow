@@ -20,5 +20,11 @@ class Classe extends Model
 
     }
 
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'class_id');
+    }
+
+
 
 }

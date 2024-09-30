@@ -32,6 +32,20 @@ class ClassController extends Controller
         // Retourner la vue avec les classes
         return view('grades.teacher_class', compact('classes'));
     }
+    public function indexA()
+    {
+        // Récupérer l'ID du professeur connecté
+        $teacher = auth()->user()->teacher;
+
+        // Récupérer les classes où le professeur a des cours
+        $classes = Schedule::where('teacher_id', $teacher->id)
+            ->with('class') // Assurez-vous que votre modèle Schedule a une relation avec ClassModel
+            ->get()
+            ->pluck('class'); // Extraire les classes
+
+        // Retourner la vue avec les classes
+        return view('attendance.view_classes', compact('classes'));
+    }
 
     /** Display classes in grid */
     public function grid()

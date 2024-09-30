@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
@@ -210,6 +211,9 @@ Route::controller(StudentController::class)->group(function () {
         Route::put('reservations/{id}', 'update')->middleware('auth')->name('reservations.update'); // Mettre à jour une réservation
         Route::post('reservations/{id}/return', 'returnBook')->middleware('auth')->name('reservations.return'); // Retourner un livre
         Route::delete('reservations/{id}', 'destroy')->middleware('auth')->name('reservations.destroy'); // Supprimer une réservation
+        Route::put('/reservations/{id}/status', [ReservationController::class, 'updateStatus'])
+            ->name('reservations.updateStatus');
+
     });
 
 
@@ -241,6 +245,7 @@ Route::controller(StudentController::class)->group(function () {
         Route::post('class/delete', 'deleteRecord')->middleware('auth')->name('class/delete'); // class/delete
         Route::get('class/show/{id}', 'show')->middleware('auth')->name('class/show'); // class/show
         Route::get('teacher/classes', 'index')->middleware('auth')->name('teacher.classe'); // class/list/page
+        Route::get('/classes/attendance', 'indexA')->middleware('auth')->name('attendance.classe'); // class/list/page
 
     });
 
@@ -249,6 +254,12 @@ Route::controller(StudentController::class)->group(function () {
     Route::post('/grades', [GradeController::class, 'store'])->name('grades.store');
     Route::delete('/grades/delete', [GradeController::class, 'destroy'])->name('grades.destroy');
     Route::put('grades/update', 'GradeController@update')->name('grades.update');
+    Route::get('mygrades', 'GradeController@show')->name('grades.show')->middleware('auth');
+
+
+
+    //PDF
+    Route::get('attendance/download/{classId}', 'AttendanceController@downloadAttendancePDF')->name('attendance.download');
 
     // ----------------------- invoice -----------------------------//
     Route::controller(InvoiceController::class)->group(function () {
@@ -276,4 +287,8 @@ Route::controller(StudentController::class)->group(function () {
         Route::get('add/fees/collection/page', 'addFeesCollection')->middleware('auth')->name('add/fees/collection/page'); // add/fees/collection
         Route::post('fees/collection/save', 'saveRecord')->middleware('auth')->name('fees/collection/save'); // fees/collection/save
     });
+
+//    Attendance
+    Route::get('classes/{id}/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
 });
