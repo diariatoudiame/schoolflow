@@ -124,38 +124,27 @@
                                 <h5 class="card-title">Change Password</h5>
                                 <div class="row">
                                     <div class="col-md-10 col-lg-6">
-                                        <form action="{{ route('change/password') }}" method="POST">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label>Old Password</label>
-                                                <input type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" value="{{ old('current_password') }}">
-                                                @error('current_password')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                           
-                                            <div class="form-group">
-                                                <label>New Password</label>
-                                                <input type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" value="{{ old('new_password') }}">
-                                                @error('new_password')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Confirm Password</label>
-                                                <input type="password" class="form-control @error('new_confirm_password') is-invalid @enderror" name="new_confirm_password" value="{{ old('new_confirm_password') }}">
-                                                @error('new_confirm_password')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        </form>
+                                    <form action="{{ route('change.password') }}" method="POST">
+    @csrf
+
+    <div class="form-group">
+        <label for="current_password">Mot de passe actuel</label>
+        <input type="password" name="current_password" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="new_password">Nouveau mot de passe</label>
+        <input type="password" name="new_password" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="new_password_confirmation">Confirmer le nouveau mot de passe</label>
+        <input type="password" name="new_password_confirmation" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+</form>
+
                                     </div>
                                 </div>
                             </div>

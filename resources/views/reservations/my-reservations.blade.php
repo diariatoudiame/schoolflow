@@ -33,9 +33,12 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-12">
-                        <div class="alert alert-info">You don't have any reservations at the moment.</div>
+                <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
+                    <div class="alert alert-info text-center border border-primary" style="width: 60%; font-size: 1.5rem; padding: 20px;">
+                        <strong>Attention :</strong> Vous n'avez pas de réservation.
                     </div>
+                </div>
+
                 @endforelse
             </div>
         </div>

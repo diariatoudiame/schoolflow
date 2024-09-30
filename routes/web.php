@@ -56,7 +56,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth'],function()
 {
     // ----------------------------login ------------------------------//
     Route::controller(LoginController::class)->group(function () {
-        Route::get('/login', 'login')->name('login');
+        Route::get('/login', 'login')->name('login'); 
         Route::post('/login', 'authenticate');
         Route::get('/logout', 'logout')->name('logout');
         Route::post('change/password', 'changePassword')->name('change/password');
@@ -68,6 +68,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth'],function()
         Route::post('/register','storeUser')->name('register');    
     });
 });
+
+
+//------------------------------Change password--------------------------//
+Route::post('/change-password', [UserManagementController::class, 'changePassword'])->name('change.password');
+
 
 Route::group(['namespace' => 'App\Http\Controllers'],function()
 {
@@ -86,7 +91,10 @@ Route::group(['namespace' => 'App\Http\Controllers'],function()
         Route::get('view/user/edit/{id}', 'userView')->middleware('auth');
         Route::post('user/update', 'userUpdate')->name('user/update');
         Route::post('user/delete', 'userDelete')->name('user/delete');
-        Route::get('get-users-data', 'getUsersData')->name('get-users-data'); /** get all data users */
+        Route::get('get-users-data', 'getUsersData')->name('get-users-data'); 
+
+        Route::post('/user/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('user.toggleStatus');
+
 
     });
 
@@ -151,6 +159,13 @@ Route::controller(StudentController::class)->group(function () {
         Route::delete('/admin/schedules/{schedule}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
         Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
 
+
+        Route::get('/schedules/select-class', [ScheduleController::class, 'selectClass'])->name('schedules.selectClass');
+        Route::get('/schedules/create-for-class', [ScheduleController::class, 'createForClass'])->name('schedules.create.forClass');
+        Route::get('/schedules/class', [ScheduleController::class, 'filterByClass'])->name('schedules.filterByClass');
+        
+        Route::resource('schedules', ScheduleController::class);
+
         Route::prefix('admin')->group(function () {
             Route::get('schedules', [ScheduleController::class, 'index'])->name('schedules.index');
             Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
@@ -168,7 +183,7 @@ Route::controller(StudentController::class)->group(function () {
 
     });
     Route::get('/teacher/space', function () {
-        return view('teacher.space-teacher'); // Assurez-vous que le fichier Blade est enregistré sous teacher/dashboard.blade.php
+        return view('teacher.space-teacher'); 
     })->name('teacher.space');
     // ------------------------ book -------------------------------//
     Route::controller(BookController::class)->group(function () {

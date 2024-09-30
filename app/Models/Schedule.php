@@ -32,6 +32,11 @@ class Schedule extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
+
+    public function class()
+    {
+        return $this->belongsTo(SchoolClass::class, 'class_id');
+    }
 }
 
 

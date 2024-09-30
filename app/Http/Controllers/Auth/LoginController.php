@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use DB;
-use Auth;
-use Session;
-use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Providers\RouteServiceProvider;
+use App\Rules\MatchOldPassword;
+use Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
+use DB;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
-use App\Rules\MatchOldPassword;
+use Session;
 
 class LoginController extends Controller
 {
@@ -118,5 +118,27 @@ class LoginController extends Controller
         Toastr::success('Logout successfully :)','Success');
         return redirect('login');
     }
+
+
+    protected function credentials(Request $request)
+    {
+        return array_merge($request->only($this->username(), 'password'), ['status' => 'active']);
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $user = User::where($this->username(), $request->{$this->username()})->first();
+        
+        if ($user && $user->status == 'inactive') {
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.deactivated')],
+            ]);
+        }
+
+        throw ValidationException::withMessages([
+            $this->username() => [trans('auth.failed')],
+        ]);
+    }
+
 
 }
