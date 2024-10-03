@@ -38,7 +38,7 @@ class SendReservationReminders extends Command
             $reservationEndDate = Carbon::parse($reservation->reservation_date)->addDays($reservation->duration);
 
             // Check if the reservation is due in 1 day
-            if (Carbon::now()->diffInDays($reservationEndDate) == 6) {
+            if (Carbon::now()->diffInDays($reservationEndDate) == 7) {
                 // Send the reminder email
                 Mail::to($reservation->user->email)->send(new ReservationReminder($reservation));
 

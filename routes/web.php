@@ -38,7 +38,7 @@ function set_active( $route ) {
 
 Route::get('/', function () {
     return view('auth.login');
-});
+})->name('auth.login');
 
 Route::group(['middleware'=>'auth'],function()
 {
@@ -46,6 +46,7 @@ Route::group(['middleware'=>'auth'],function()
     {
         return view('home');
     });
+
     Route::get('home',function()
     {
         return view('home');

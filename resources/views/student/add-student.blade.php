@@ -24,7 +24,7 @@
                 <div class="col-sm-12">
                     <div class="card comman-shadow">
                         <div class="card-body">
-                            <form action="{{ route('student/add/save') }}" method="POST" enctype="multipart/form-data">
+                            <form id="addStudentForm" action="{{ route('student/add/save') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-12">
@@ -151,13 +151,11 @@
                                             </select>
                                             @error('academic_year')
                                             <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                             @enderror
                                         </div>
                                     </div>
-
-
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Class <span class="login-danger">*</span></label>
@@ -180,7 +178,6 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Upload Image</label>
@@ -192,10 +189,14 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="col-12">
-                                        <div class="form-group">
-                                            <button class="btn btn-primary btn-block">Add Student</button>
+                                        <div class="student-submit">
+                                            <button id="submitBtn" type="submit" class="btn btn-primary">
+                                                Submit
+                                                <span id="loadingIndicator" style="display: none;">
+                                                    <i class="fas fa-spinner fa-spin"></i>
+                                                </span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -206,4 +207,22 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        document.getElementById('addStudentForm').addEventListener('submit', function(e) {
+            var submitBtn = document.getElementById('submitBtn');
+            var loadingIndicator = document.getElementById('loadingIndicator');
+
+            if(this.checkValidity()) {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                loadingIndicator.style.display = 'inline-block';
+                submitBtn.textContent = 'Submitting... ';
+                submitBtn.appendChild(loadingIndicator);
+                this.submit();
+            }
+        });
+    </script>
 @endsection

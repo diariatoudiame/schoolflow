@@ -15,7 +15,7 @@
                         @if(auth()->check())
                             @if(auth()->user()->role_name === 'Admin')
                                 <li><a href="{{ route('home') }}" class="{{ set_active(['home']) }}">Admin Dashboard</a></li>
-                            @elseif(auth()->user()->role_name === 'Teachers')
+                            @elseif(auth()->user()->role_name === 'Teacher')
                                 <li><a href="{{ route('teacher/dashboard') }}" class="{{ set_active(['teacher/dashboard']) }}">Teacher Dashboard</a></li>
                             @elseif(auth()->user()->role_name === 'Student')
                                 <li><a href="{{ route('student/dashboard') }}" class="{{ set_active(['student/dashboard']) }}">Student Dashboard</a></li>

@@ -16,30 +16,30 @@
                 </div>
             </div>
 
-            <div class="book-group-form">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by ID ...">
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by Title ..."> <!-- Change to Title -->
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by Author ..."> <!-- Change to Author -->
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="search-book-btn">
-                            <button type="button" class="btn btn-primary">Search</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="book-group-form">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-lg-3 col-md-6">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <input type="text" class="form-control" placeholder="Search by ID ...">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-lg-3 col-md-6">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <input type="text" class="form-control" placeholder="Search by Title ..."> <!-- Change to Title -->--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-lg-4 col-md-6">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <input type="text" class="form-control" placeholder="Search by Author ..."> <!-- Change to Author -->--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-lg-2">--}}
+{{--                        <div class="search-book-btn">--}}
+{{--                            <button type="button" class="btn btn-primary">Search</button>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <div class="row">
                 <div class="col-sm-12">

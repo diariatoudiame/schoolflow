@@ -67,6 +67,7 @@ class UserManagementController extends Controller
             'avatar'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+
         DB::beginTransaction();
         try {
             // Gestion de l'upload de l'image
@@ -89,7 +90,7 @@ class UserManagementController extends Controller
                 'department'    => $request->department,
                 'status'        => $request->status,
                 'avatar'        => $image_name,
-                'password'      => Hash::make('defaultpassword123'), // Mot de passe par défaut à changer
+                'password'      => Hash::make('passer@12'), // Mot de passe par défaut à changer
             ]);
             Mail::to($user->email)->send(new AccountCreated($user));
             DB::commit();
